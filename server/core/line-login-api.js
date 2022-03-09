@@ -104,6 +104,8 @@ function getLoginURL(req, redirect) {
 
     cache.set(`${process.env.LINE_STATE_KEYWORD}_${params.state}`, null);
 
+    console.log(`${req.protocol}://${req.headers.host}/auth?redirect=${req.protocol}://${req.headers.host}${redirect}`);
+
     return url.toString();
 }
 
