@@ -116,7 +116,7 @@ async function createEmptyVaccination(req, res) {
         });
 
         res.write(new URLSearchParams({
-            redirect: `${req.protocol}://${req.headers.host}/vaccination?id=${create.id}`
+            redirect: `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/vaccination?id=${create.id}`
         }).toString());
         res.end();
 

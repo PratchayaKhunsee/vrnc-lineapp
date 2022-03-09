@@ -7,7 +7,7 @@ const cache = require('../core/cache');
  * @param {import('express').Response} res 
  */
 function redirect(req, res) {
-    let url = new URL(req.url, `${req.protocol}://${req.headers.host}`);
+    let url = new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`);
     let uuid = url.searchParams.get('id');
 
     let authorization = cache.get(`${process.env.APP_ACCESS_KEYWORD}_${uuid}`);

@@ -71,7 +71,7 @@ function login(req, res) {
     let params = {
         'response_type': 'code',
         'client_id': process.env.LINE_CLIENT_ID,
-        'redirect_uri': `${req.protocol}://${req.headers.host}/auth?redirect=${req.protocol}://${req.headers.host}${req.url}`,
+        'redirect_uri': `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/auth?redirect=${process.env.PROTOCOL || req.protocol}://${req.headers.host}${req.url}`,
         'state': crypto.randomUUID(),
         'scope': 'profile',
         'nonce': crypto.randomUUID()
@@ -94,7 +94,7 @@ function getLoginURL(req, redirect) {
     let params = {
         'response_type': 'code',
         'client_id': process.env.LINE_CLIENT_ID,
-        'redirect_uri': `${req.protocol}://${req.headers.host}/auth?redirect=${req.protocol}://${req.headers.host}${redirect}`,
+        'redirect_uri': `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/auth?redirect=${process.env.PROTOCOL || req.protocol}://${req.headers.host}${redirect}`,
         'state': crypto.randomUUID(),
         'scope': 'profile',
         'nonce': crypto.randomUUID()
@@ -103,8 +103,6 @@ function getLoginURL(req, redirect) {
     for (let n in params) url.searchParams.set(n, params[n]);
 
     cache.set(`${process.env.LINE_STATE_KEYWORD}_${params.state}`, null);
-
-    console.log(`${req.protocol}://${req.headers.host}/auth?redirect=${req.protocol}://${req.headers.host}${redirect}`);
 
     return url.toString();
 }
@@ -128,7 +126,7 @@ function verifyLoginState(state) {
  * @param {import('express').Request} req
  */
 function requestAccessToken(req) {
-    let url = new URL(req.url, `${req.protocol}://${req.headers.host}`);
+    let url = new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`);
     /** @type {String} */
     let code = '';
     let otherParams = {};
@@ -168,7 +166,7 @@ function requestAccessToken(req) {
         'code': code,
         'client_id': process.env.LINE_CLIENT_ID,
         'client_secret': process.env.LINE_CLIENT_SECRET,
-        'redirect_uri': `${req.protocol}://${req.headers.host}/auth${params.length > 0 ? '?' + params : ''}`,
+        'redirect_uri': `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/auth${params.length > 0 ? '?' + params : ''}`,
     }));
 }
 

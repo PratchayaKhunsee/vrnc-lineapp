@@ -12,17 +12,17 @@ const {
  * @param {import('express').Response} res
  */
 async function auth(req, res) {
-    if (verifyLoginState(new URL(req.url, `${req.protocol}://${req.headers.host}`).searchParams.get('state'))) {
+    if (verifyLoginState(new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`).searchParams.get('state'))) {
         try {
             let response = await requestAccessToken(req, res);
             if (response.body instanceof Buffer) {
                 let result = JSON.parse(response.body.toString());
-                let url = new URL(req.url, `${req.protocol}://${req.headers.host}`);
+                let url = new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`);
 
                 if (result.error) return;
 
                 let uuid = crypto.randomUUID();
-                let tokenUrl = new URL(`${req.protocol}://${req.headers.host}/token`);
+                let tokenUrl = new URL(`${process.env.PROTOCOL || req.protocol}://${req.headers.host}/token`);
 
                 cache.set(
                     `${process.env.APP_ACCESS_KEYWORD}_${uuid}`,

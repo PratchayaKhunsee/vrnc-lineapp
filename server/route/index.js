@@ -15,7 +15,7 @@ function route(app) {
     app.use(cors(function (req, cb) {
         // ทำให้แอปฯ นี้สามารถใช้งานได้เฉพาะภายในโดเมนของแอปฯ นี้เท่านั้น
         cb(null, {
-            origin: `${req.protocol}://${req.header('host')}`,
+            origin: `${process.env.PROTOCOL || req.protocol}://${req.header('host')}`,
         });
     }), (req, res, next) => {
         /**
