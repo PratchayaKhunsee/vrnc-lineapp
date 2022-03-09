@@ -25,6 +25,9 @@ let wait;
 async function connect(cb) {
     let c = new pg.Client({
         connectionString: process.env.DEV_DATABASE_URL || process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false,
+        },
     });
 
     if (count == maxCount) {
