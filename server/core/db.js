@@ -1,7 +1,7 @@
 const pg = require('pg');
 
 // เอาออกหากใช้บนเว็บไซต์ที่มีระบบจัดการ env
-require('dotenv').config();
+// require('dotenv').config();
 
 /**
  * @typedef {Object} WaitingConnection

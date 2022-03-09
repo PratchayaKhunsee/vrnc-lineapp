@@ -3,7 +3,7 @@ const { route } = require('./server');
 const app = express();
 
 // เอาออกหากใช้บนเว็บไซต์ที่มีระบบจัดการ env
-require('dotenv').config();
+// require('dotenv').config();
 
 route(app);
 
