@@ -31,6 +31,9 @@ async function login(req, res) {
 
         if (body instanceof Buffer) {
             let params = new URLSearchParams(body.toString());
+
+            console.log(getLoginURL(req, params.get('redirect')));
+
             res.write(new URLSearchParams({
                 'redirect': getLoginURL(req, params.get('redirect'))
             }).toString());
