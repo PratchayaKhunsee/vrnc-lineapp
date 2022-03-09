@@ -77,6 +77,8 @@ function login(req, res) {
         'nonce': crypto.randomUUID()
     };
 
+    console.log(`${req.protocol}://${req.headers.host}/auth?redirect=${req.protocol}://${req.headers.host}${req.url}`);
+
     for (let n in params) url.searchParams.set(n, params[n]);
 
     cache.set(`${process.env.LINE_STATE_KEYWORD}_${params.state}`, null);
