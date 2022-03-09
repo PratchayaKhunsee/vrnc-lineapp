@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
+@keyframes topdown_fadein {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes timed-popup {
+    0% {
+        opacity: 0;
+        transform: translateX(25%);
+    }
+
+    6.25% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    93.75% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(25%);
+    }
+}
+
+:root {
+    --base-color: #0091ff;
+    --darker-base-color: #0072c9;
+    --darkest-base-color: #004b85;
+    --interactive-color: #000000ad;
+    --inactive-color: #000000ad;
+    --lighter-inactive-color: #00000030;
+    --shadow-properties: #000000cd 1px 1px 5px;
+    --bgcolor: linear-gradient(180deg, blue, lime);
+    --msg-margin: 5px;
+    --highlight-properties: inset white 2px 2px 4px -2px;
+    user-select: none;
+}
+
+:root,
+input,
+textarea,
+button,
+select,
+option {
+    font-family: 'Prompt', sans-serif;
+    font-size: max(2.25vh, 16px);
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+body.ready {
+    background: var(--bgcolor);
+    background-repeat: no-repeat;
+}
+
+body:not(.ready)> {
+    display: none;
+}
+
+main {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+ul {
+    padding-inline-start: 0;
+}
+
+ul>li::marker {
+    content: "";
+}
+
+input,
+select,
+textarea {
+    padding: 5px;
+    border: 0;
+    border-bottom: solid 2px #000000ad;
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    background-color: #0000001f;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-bottom: solid 2px var(--base-color);
+    outline: none;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    background-color: var(--lighter-inactive-color);
+}
+
+button,
+input[type=button] {
+    padding: 5px;
+    color: white;
+    background: var(--base-color);
+    border: 0;
+    border-radius: 5px;
+}
+
+button:disabled,
+input[type=button]:disabled {
+    background: var(--inactive-color) !important;
+}
+
+button:hover,
+input[type=button]:hover,
+button:focus,
+input[type=button]:focus {
+    background-color: var(--darker-base-color);
+}
+
+button:focus,
+input[type=button]:focus {
+    outline: 0;
+    text-decoration: underline;
+}
+
+button:active,
+input[type=button]:active {
+    background-color: var(--darkest-base-color);
+}
+
+.paper {
+    position: relative;
+    width: calc(640px - 25px);
+    max-width: calc(100vw - 25px);
+    background: white;
+    padding: 10px;
+    box-shadow: var(--shadow-properties);
+    border-radius: 0 0 5px 5px;
+}
+
+.mobile-compatible {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.mobile-compatible>.whole-line-considered {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.topdown-fadein {
+    animation: topdown_fadein .5s ease-out 0s 1 forwards normal;
+}
+
+.msg.empty-field-detected+*::before {
+    content: "โปรดกรอกข้อมูล";
+    font-size: .8rem;
+    color: red;
+    margin-left: var(--msg-margin);
+}
+
+.timed-popup {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: var(--shadow-properties), var(--highlight-properties);
+    border-radius: 5px;
+    animation: timed-popup 4s linear 0s 1 forwards normal;
+}
+
+.correct {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-shadow: var(--shadow-properties), var(--highlight-properties);
+    border-radius: 50%;
+    background: limegreen;
+    vertical-align: middle;
+    margin: 0 5px;
+}
+
+.correct:first-child {
+    margin-left: 0;
+}
+
+.correct::before {
+    content: "";
+    display: block;
+    border: solid #fff 5px;
+    border-width: 0 5px 5px 0;
+    width: 4px;
+    height: 16px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotateZ(45deg);
+}
+
+.wrong {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-shadow: var(--shadow-properties), var(--highlight-properties);
+    border-radius: 50%;
+    background: red;
+    vertical-align: middle;
+    margin: 0 5px;
+}
+
+.wrong:first-child {
+    margin-left: 0;
+}
+
+.wrong::before,
+.wrong::after {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 24px;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotateZ(-45deg);
+    transform-origin: 50% 50%;
+}
+
+.wrong::after {
+    transform: translate(-50%, -50%) rotateZ(45deg);
+}
+
+dialog {
+    border-radius: 10px;
+    border: 0;
+    min-height: 128px;
+    min-width: 190px;
+    max-width: calc(100vw - 20px);
+    display: flex;
+    flex-flow: column nowrap;
+    box-shadow: var(--shadow-properties);
+}
+
+dialog:not([open]) {
+    display: none;
+}
+
+dialog::backdrop {
+    background: #0000009a;
+}
+
+dialog .title {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+dialog .content {
+    flex-grow: 2;
+}
+
+dialog .actions {
+    display: flex;
+    flex-flow: row wrap-reverse;
+}
+
+dialog .actions>* {
+    margin-left: 5px;
+}
+
+dialog .actions>*:first-child {
+    margin-left: auto;
+}
+
+dialog .title+.content,
+dialog .content+.actions {
+    margin-top: 10px;
+}
+
+dialog button {
+    background: transparent;
+    color: var(--base-color);
+}
+
+dialog button:hover,
+dialog button:focus {
+    background: #0000002a;
+}
+
+dialog button:active {
+    background: #0000004d;
+}
+
+/* คุณสมบัติจะถูกเปลี่ยนหากมีขนาดหน้าจอเท่ากับโทรศัพท์ */
+@media screen and (max-width: 640px) {
+    @keyframes timed-popup {
+        0% {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        6.25% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        93.75% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(100%);
+
+        }
+    }
+
+    .paper {
+        box-sizing: border-box;
+        width: calc(100vw - 25px);
+    }
+
+    .mobile-compatible {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-compatible>* {
+        width: 100%;
+    }
+
+    .mobile-compatible>*:not(:first-child) {
+        margin-top: 10px;
+    }
+
+    .timed-popup {
+        bottom: 0;
+        left: 0;
+        top: auto;
+        height: fit-content;
+        width: 100vw;
+        border-radius: 0;
+    }
+}

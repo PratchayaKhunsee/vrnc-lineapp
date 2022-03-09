@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลการรับวัคซีน</title>
+    <link rel="preload" as="style" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <main></main>
+    <template name="main">
+        <section class="paper topdown-fadein">
+            <h1>
+                ข้อมูลการรับวัคซีน
+            </h1>
+            <form>
+                <ul class="mobile-compatible">
+                    <li>
+                        <label>
+                            <div>ประเภทวัคซีน</div>
+                            <input type="text" name="vaccine_name" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>ยี่ห้อวัคซีน</div>
+                            <input type="text" name="vaccine_brand" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>วันที่ฉีด</div>
+                            <input type="date" name="vaccination_date" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li class="whole-line-considered">
+                        <label>
+                            <div>สถานที่ฉีด</div>
+                            <textarea name="vaccination_address" class="msg"></textarea>
+                            <div></div>
+                        </label>
+                    </li>
+                </ul>
+                <button type="submit">บันทึก</button>
+            </form>
+        </section>
+    </template>
+    <template name="invalid-alertdialog">
+        <dialog>
+            <div class="title">
+                คำเตือน
+            </div>
+            <div class="content">
+                ไม่สามารถอ่านข้อมูลดังกล่าวได้ ขออภัยในความไม่สะดวก
+            </div>
+        </dialog>
+    </template>
+    <template name="successful-submit">
+        <div class="timed-popup"><span class="correct"></span>บันทึกข้อมูลสำเร็จ</div>
+    </template>
+    <template name="failed-submit">
+        <div class="timed-popup"><span class="wrong"></span>ไม่สามารถบันทึกข้อมูลได้</div>
+    </template>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/vaccination.js"></script>
+</body>
+
+</html>

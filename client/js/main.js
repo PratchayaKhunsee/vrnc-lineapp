@@ -1,0 +1,248 @@
+/**
+ * ฟังกชันสำหรับการตรวจสอบการเข้าสู่ระบบ
+ * @param {*} body 
+ */
+async function authenticate(body = null) {
+    let auth = localStorage.getItem('authorization');
+    let headers = {
+        'content-type': 'application/x-www-from-urlencoded',
+    };
+
+    if (auth) {
+        headers['authorization'] = `Bearer ${auth}`;
+    }
+
+    let res = await fetch('/login', {
+        method: 'POST',
+        headers,
+        body,
+    });
+
+    if (res.status != 200) {
+        let params = new URLSearchParams(await res.text());
+        if (params.has('redirect')) location.assign(params.get('redirect'));
+        throw res.status;
+    }
+}
+
+
+/**
+ * ร้องขอการเข้าสู่เว็บไซต์ผ่าน URL
+ * @param {String} url
+ * @param {*} body 
+ */
+async function POST(url, body = null) {
+    let auth = localStorage.getItem('authorization');
+    let headers = {};
+
+    if (auth) {
+        headers['authorization'] = `Bearer ${auth}`;
+    }
+
+    switch (typeof body) {
+        case 'object':
+            headers['content-type'] = 'application/json';
+            body = JSON.stringify(body);
+            break;
+        case 'function':
+            body = body();
+            if (typeof body == 'object') {
+                headers['content-type'] = 'application/json';
+                body = JSON.stringify(body);
+            }
+            break;
+        case 'bigint':
+            body = body.toString();
+            break;
+        default:
+            body = body === null ? null : String(body);
+            break;
+    }
+
+    let res = await fetch(url, {
+        method: 'POST',
+        headers,
+        body,
+    });
+
+    if (res.status != 200) {
+        throw res.status;
+    }
+
+    return res;
+}
+
+/**
+ * ร้องขอการเข้าสู่เว็บไซต์ผ่าน URL
+ * @param {String} url
+ * @param {*} body 
+ */
+async function GET(url) {
+    let auth = localStorage.getItem('authorization');
+    let headers = {};
+
+    if (auth) {
+        headers['authorization'] = `Bearer ${auth}`;
+    }
+
+    let res = await fetch(url, {
+        method: 'GET',
+        headers,
+    });
+
+    if (res.status != 200) {
+        throw res.status;
+    }
+
+    return res;
+}
+
+/**
+ * @typedef {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} InputElement
+ */
+
+/**
+ * บังคับให้เอเลเมนต์ดังกล่าวอยู่ในสถานะ disabled
+ * @param {InputElement[]} inputs 
+ * @param {Boolean} [disabled=true] สถานะ disabled
+ */
+function disableElements(elements, disabled = true) {
+    for (let i of elements) {
+        i.disabled = !!disabled;
+    }
+}
+
+/**
+ * @typedef {StringConstructor|NumberConstructor|DateConstructor|ObjectConstructor} DataBindingRule
+ * @typedef {Object<string, DataBindingRule>} DataBindingRules
+ * 
+ */
+
+/** 
+ * ทำการผูกเอเลเมนต์ไว้กับออปเจ็คสำหรับจัดการข้อมูลที่ผู้ใช้กรอก
+ * 
+ * @param {DataBindingRules} rules รายชื่อสำหรับบ่งบอกประเภทข้อมูลที่ควรได้รับจากเอเลเมนต์ตามแอตทริบิวต์ id หรือ name
+ * @param {InputElement[]} inputs 
+ */
+function bindDataToInputs(rules, inputs) {
+
+    let data = {};
+    let bind = {};
+
+    for (let el of inputs) {
+
+        let name = el.id || el.name;
+
+        if (!(name in rules) || !name) continue;
+
+        data[name] = null;
+        switch (rules[name]) {
+            case Date:
+                let v = new Date(el.value);
+                data[name] = v;
+                el.addEventListener('input', ev => {
+                    let d = new Date(el.value);
+                    v.setTime(d.getTime());
+                });
+
+                Object.defineProperty(bind, name, {
+                    get: () => v,
+                    set(x) {
+                        let d = new Date(x);
+                        v.setTime(d.getTime());
+                        let dd = d.getDate().toString();
+                        let MM = (d.getMonth() + 1).toString();
+                        let yyyy = d.getFullYear().toString();
+
+                        while (dd.length < 2) dd = '0' + dd;
+                        while (MM.length < 2) MM = '0' + MM;
+                        while (yyyy.length < 4) yyyy = '0' + yyyy;
+
+                        switch (el.type) {
+                            case 'date':
+                                el.value = `${yyyy}-${MM}-${dd}`;
+                                break;
+
+                            default:
+                                el.value = d.toDateString();
+                                break;
+                        }
+
+                    },
+                    enumerable: true,
+                });
+                break;
+            case Number:
+                data[name] = Number(el.value);
+
+                el.addEventListener('input', ev => {
+                    data[name] = Number(el.value);
+                });
+
+                Object.defineProperty(bind, name, {
+                    get: () => data[name],
+                    set(x) {
+                        let n = Number(x);
+                        data[name] = n;
+                        el.value = n;
+                    },
+                    enumerable: true,
+                });
+                break;
+            default:
+                data[name] = el.value;
+                el.addEventListener('input', ev => {
+                    data[name] = el.value || null;
+                });
+
+                Object.defineProperty(bind, name, {
+                    get: () => data[name],
+                    set(x) {
+                        data[name] = x == null ? null : String(x);
+                        el.value = x == null ? '' : String(x);
+                    },
+                    enumerable: true,
+                });
+        }
+    }
+
+    return bind;
+}
+
+/**
+ * ปิดไดอะล็อก
+ * @this {HTMLElement}
+ */
+function closeModal() {
+    let p = this.parentElement;
+    while (p) {
+        if (p instanceof HTMLDialogElement && typeof p.close == 'function') {
+            p.close();
+            return;
+        }
+        p = p.parentElement;
+    }
+}
+
+
+const getTemplate = (() => {
+    let tl = document.querySelectorAll('template');
+    return getTemplate;
+
+    /**
+     * ค้นหาเอเลเมนต์ template ทีได้รวบรวมหลังจากโหลดหน้าเว็บสำเร็จแล้วด้วยตัวบงชี้
+     * @param {String} identifier จะใช้ตัวบ่งชี้เป็นค่า id หรือ name ก็ได้
+     * @returns 
+     */
+    function getTemplate(identifier) {
+        /** @type {HTMLTemplateElement} */
+        let name;
+        for (let t of tl) {
+            if (t.id == identifier) return t;
+
+            if (t.getAttribute('name') == identifier && !name) name = t;
+        }
+
+        return name || null;
+    };
+})();

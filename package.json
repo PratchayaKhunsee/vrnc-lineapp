@@ -1,0 +1,22 @@
+{
+  "name": "vaccine_rnc_lineapp",
+  "version": "1.0.0",
+  "description": "A web server for Line application.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "serve": "node index.js"
+  },
+  "author": "Pantakarn Thebq",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "node-cache": "^5.1.2",
+    "pdfkit": "^0.13.0",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "dotenv": "^14.3.0",
+    "nodemon": "^2.0.15"
+  }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลส่วนตัวผู้ใช้</title>
+    <link rel="preload" as="style" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <main></main>
+
+    <template name="main">
+
+        <section class="paper topdown-fadein">
+            <h1>ข้อมูลส่วนตัวผู้ใช้</h1>
+            <form>
+                <ul class="mobile-compatible">
+                    <li>
+                        <label>
+                            <div>ชื่อ</div>
+                            <input name="firstname" type="text" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>นามสกุล</div>
+                            <input name="lastname" type="text" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>เพศ</div>
+                            <select name="sex">
+                                <option value="0">ชาย</option>
+                                <option value="1">หญิง</option>
+                            </select>
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>วันเดือนปีเกิด</div>
+                            <input name="birthdate" type="date" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                    <li class="whole-line-considered">
+                        <label>
+                            <div>ที่อยู่</div>
+                            <textarea name="address" class="msg"></textarea>
+                            <div></div>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <div>เบอร์โทร</div>
+                            <input name="tel" type="text" maxlength="10" class="msg">
+                            <div></div>
+                        </label>
+                    </li>
+                </ul>
+                <button type="submit">บันทึก</button>
+            </form>
+        </section>
+    </template>
+    <template name="successful-submit">
+        <div class="timed-popup"><span class="correct"></span>บันทึกข้อมูลสำเร็จ</div>
+    </template>
+    <template name="failed-submit">
+        <div class="timed-popup"><span class="wrong"></span>ไม่สามารถบันทึกข้อมูลได้</div>
+    </template>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/userinfo.js"></script>
+</body>
+
+</html>
