@@ -73,6 +73,7 @@ async function getUserInfo(req, res) {
         res.json(userinfo);
 
     } catch (err) {
+        console.error(err);
         res.sendStatus(403);
     }
 }
