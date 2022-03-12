@@ -12,7 +12,10 @@ const {
  * @param {import('express').Response} res
  */
 async function auth(req, res) {
-    if (verifyLoginState(new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`).searchParams.get('state'))) {
+    if (verifyLoginState(new URL(
+        req.url,
+        `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`
+    ).searchParams.get('state'))) {
         try {
             let response = await requestAccessToken(req, res);
             if (response.body instanceof Buffer) {

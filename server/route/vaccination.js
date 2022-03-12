@@ -98,6 +98,25 @@ async function createEmptyVaccination(req, res) {
             try {
                 await client.query('BEGIN');
 
+                let user = await client.query({
+                    text: `SELECT * FROM userinfo WHERE uid = $1`,
+                    values: [profile.userId],
+                });
+    
+                switch (user.rows.length) {
+                    case 0:
+                        let c = await client.query({
+                            text: `INSERT INTO userinfo(uid) VALUES($1) RETURNING *`,
+                            values: [profile.userId],
+                        });
+                        if (c.rowCount != 1) throw c;
+                        break;
+                    case 1:
+                        break;
+                    default:
+                        throw user;
+                }
+
                 let result = await client.query({
                     text: `INSERT INTO vaccination(uid) VALUES($1) RETURNING *`,
                     values: [profile.userId],
