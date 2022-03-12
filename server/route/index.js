@@ -67,7 +67,7 @@ function route(app) {
     app.post('/vaccination/save', express.json(), saveVaccination);
     app.get('/userinfo/retrieve', getUserInfo);
     app.post('/vaccination/retrieve', express.json(), getVaccination);
-    app.post('/vaccination/create/confirm', createEmptyVaccination);
+    app.get('/vaccination/create/confirm', createEmptyVaccination);
 }
 
 module.exports = route;
