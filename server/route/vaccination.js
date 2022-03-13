@@ -183,7 +183,7 @@ async function listBrieflyVaccination(req, res) {
                 await client.query('COMMIT');
 
                 let result = await client.query({
-                    text: `SELECT id,vaccine_name,vaccine_brand FROM vaccination WHERE uid = $1`,
+                    text: `SELECT id,vaccine_brand FROM vaccination WHERE uid = $1`,
                     values: [profile.userId],
                 });
 
