@@ -102,7 +102,7 @@ async function createEmptyVaccination(req, res) {
                     text: `SELECT * FROM userinfo WHERE uid = $1`,
                     values: [profile.userId],
                 });
-    
+
                 switch (user.rows.length) {
                     case 0:
                         let c = await client.query({
@@ -129,6 +129,7 @@ async function createEmptyVaccination(req, res) {
                 return result.rows[0];
             } catch (err) {
                 await client.query('ROLLBACK');
+                throw err;
             }
 
 
@@ -144,8 +145,68 @@ async function createEmptyVaccination(req, res) {
     }
 }
 
+/**
+ * ลอจิกสำหรับลิสต์ข้อมูลการรับวัคซีนเบื้องต้น
+ * 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+async function listBrieflyVaccination(req, res) {
+
+    try {
+
+        let profile = await getUserProfile(req);
+
+        let list = await connect(async client => {
+            try {
+                await client.query('BEGIN');
+
+                let user = await client.query({
+                    text: `SELECT * FROM userinfo WHERE uid = $1`,
+                    values: [profile.userId],
+                });
+
+                switch (user.rows.length) {
+                    case 0:
+                        let c = await client.query({
+                            text: `INSERT INTO userinfo(uid) VALUES($1) RETURNING *`,
+                            values: [profile.userId],
+                        });
+                        if (c.rowCount != 1) throw c;
+                        break;
+                    case 1:
+                        break;
+                    default:
+                        throw user;
+                }
+
+                await client.query('COMMIT');
+
+                let result = await client.query({
+                    text: `SELECT id,vaccine_name,vaccine_brand FROM vaccination WHERE uid = $1`,
+                    values: [profile.userId],
+                });
+
+                return result.rows;
+            } catch (err) {
+                await client.query('ROLLBACK');
+                throw err;
+            }
+
+
+        });
+
+        res.json(list);
+        res.end();
+
+    } catch (error) {
+        res.sendStatus(403);
+    }
+}
+
 module.exports = {
     saveVaccination,
     getVaccination,
     createEmptyVaccination,
+    listBrieflyVaccination,
 };

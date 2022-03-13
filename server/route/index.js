@@ -5,7 +5,7 @@ const { auth } = require('./auth');
 const { login } = require('./login');
 const { token } = require('./token');
 const { saveUserInfo, getUserInfo } = require('./userinfo');
-const { saveVaccination, getVaccination, createEmptyVaccination } = require('./vaccination');
+const { saveVaccination, getVaccination, createEmptyVaccination, listBrieflyVaccination } = require('./vaccination');
 
 /**
  * ทำ URL ให้กับเว็บไซต์ และออกแบบการทำงานบนเซิร์ฟเวอร์
@@ -68,6 +68,7 @@ function route(app) {
     app.get('/userinfo/retrieve', getUserInfo);
     app.post('/vaccination/retrieve', express.json(), getVaccination);
     app.get('/vaccination/create/confirm', createEmptyVaccination);
+    app.get('/vaccination/list', listBrieflyVaccination);
 }
 
 module.exports = route;
