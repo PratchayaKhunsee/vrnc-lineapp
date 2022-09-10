@@ -18,6 +18,7 @@ const adminAuth = require('firebase-admin/auth');
 // require('dotenv').config();
 
 const app = initializeApp({
+
     apiKey: process.env.FIREBASE_API_KEY,
     projectId: process.env.FIREBASE_PROJECT_ID,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -41,12 +42,10 @@ function pushPromiseLock() {
     const token = await adminAuth.getAuth(adminApp).createCustomToken(process.env.FIREBASE_DATABASE_ALLOWED_USER_UID)
     credential = await signInWithCustomToken(getAuth(app), token);
 
-    console.log(credential.user.toJSON());
-
     for (var f of locks) f();
 })();
 
-const db = getDatabase(app);
+
 
 class Match {
     constructor(key, value) {
@@ -65,6 +64,9 @@ class Match {
  */
 async function select(refPath, ...matches) {
     if (!credential) await pushPromiseLock();
+    const db = getDatabase(app);
+    console.log(db.app.options);
+
     if (matches.length == 0) return await get(ref(db, refPath)).then(snapshot => snapshot.toJSON());
 
     const result = [];
@@ -84,6 +86,8 @@ async function select(refPath, ...matches) {
  */
 async function insert(refPath, value, useOverwriteMethod = false) {
     if (!credential) await pushPromiseLock();
+    const db = getDatabase(app);
+
     if (useOverwriteMethod) {
         await set(ref(db, refPath), value);
         return;
@@ -98,6 +102,8 @@ async function insert(refPath, value, useOverwriteMethod = false) {
  */
 async function update(refPath, values) {
     if (!credential) await pushPromiseLock();
+    const db = getDatabase(app);
+
     return await updateDatabase(ref(db, refPath), values);
 }
 
