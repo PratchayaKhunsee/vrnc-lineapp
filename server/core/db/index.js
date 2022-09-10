@@ -44,7 +44,7 @@ async function readUserInfo(uid) {
                 tel: "",
             };
 
-            p.uid = await firebase.insert(`userinfo`, p, true);
+            p.uid = await firebase.insert(`userinfo/${uid}`, p, true);
 
             return p;
         }
