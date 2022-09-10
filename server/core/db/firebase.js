@@ -15,7 +15,7 @@ const app = initializeApp({
 });
 
 const adminApp = admin.initializeApp({
-    credential: admin.cert(require.main.require(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)),
+    credential: admin.cert(require(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)),
     projectId: process.env.FIREBASE_PROJECT_ID,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
 });
