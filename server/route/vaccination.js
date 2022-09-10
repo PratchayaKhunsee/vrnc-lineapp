@@ -11,7 +11,7 @@ const database = require('../core/db');
  * @param {import('express').Response} res
  */
 async function saveVaccination(req, res) {
-    if (hasEmptyField(req.body, ['vaccine_name', 'vaccine_brand', 'vaccination_date', 'vaccination_address', 'id'])) {
+    if (hasEmptyField(req.body, ['vaccine_name', 'vaccine_brand', 'vaccination_date', 'vaccination_address', 'id', 'uid'])) {
         res.json(createErrorMessage('empty_field_detected'));
         return;
     }

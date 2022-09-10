@@ -6,8 +6,10 @@
     });
 
     async function onrendered() {
+        
         document.body.classList.add('ready');
 
+        const params = new URLSearchParams(location.search);
         const main = document.querySelector('main');
         const invalidAlertDialog = getTemplate('invalid-alertdialog');
         const failedPopup = getTemplate('failed-submit');
@@ -26,7 +28,6 @@
         disableElements(form.elements, true);
 
         try {
-            let params = new URLSearchParams(location.search);
             let res = await POST('/vaccination/retrieve', {
                 id: params.get('id')
             });
@@ -51,7 +52,8 @@
             disableElements(form.elements, true);
 
             try {
-                const res = await POST('vaccination/save', data);
+                console.log(data, {...data, id: params.get('id') })
+                const res = await POST('vaccination/save', {...data, id: params.get('id')});
 
                 let result = await res.json();
 
