@@ -6,7 +6,7 @@
     });
 
     async function onrendered() {
-        
+
         document.body.classList.add('ready');
 
         const params = new URLSearchParams(location.search);
@@ -28,9 +28,7 @@
         disableElements(form.elements, true);
 
         try {
-            let res = await POST('/vaccination/retrieve', {
-                id: params.get('id')
-            });
+            let res = await POST('/vaccination/retrieve', { id: params.get('id') });
 
             let vaccination = await res.json();
 
@@ -52,8 +50,7 @@
             disableElements(form.elements, true);
 
             try {
-                console.log(data, {...data, id: params.get('id') })
-                const res = await POST('vaccination/save', {...data, id: params.get('id')});
+                const res = await POST('vaccination/save', { ...data, id: params.get('id') });
 
                 let result = await res.json();
 
