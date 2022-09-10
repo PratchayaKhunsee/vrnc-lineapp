@@ -7,9 +7,9 @@ const {
     push,
     update: updateDatabase,
     query,
-    equalTo, orderByChild,
+    equalTo,
     set,
-    child,
+    orderByPriority,
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
@@ -73,10 +73,10 @@ async function select(refPath, ...matches) {
     const result = [];
 
     for (let m of matches) {
-        const q = query(ref(db, refPath), orderByChild(m.key));
-        console.log(q.toJSON());
+        const q = query(ref(db, refPath), orderByPriority(), equalTo(m.value));
+        console.log(q.toJSON(), m.key, m.value);
         let items = (await get(q)).val();
-        
+
         Array.prototype.push.apply(result, items);
     }
 
