@@ -18,8 +18,9 @@ const adminAuth = require('firebase-admin/auth');
 // require('dotenv').config();
 
 const app = initializeApp({
-
     apiKey: process.env.FIREBASE_API_KEY,
+    appId: process.env.FIREBASE_APP_ID,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
     projectId: process.env.FIREBASE_PROJECT_ID,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
 });
