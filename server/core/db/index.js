@@ -80,7 +80,7 @@ async function readUserInfo(uid) {
  * @param {UserInfo} values 
  * @returns {void}
  */
-function writeUserInfo(uid, values) {
+async function writeUserInfo(uid, values) {
     if (DATABASE_TYPE == "firebase") {
         const p = { ...values };
         if (typeof values.firstname !== 'string') delete p.firstname;
@@ -105,11 +105,11 @@ function writeUserInfo(uid, values) {
 
 }
 
-function readVaccination(uid, id) {
+async function readVaccination(uid, id) {
 
 }
 
-function writeVaccination(uid, id, {
+async function writeVaccination(uid, id, {
     vaccine_name,
     vaccine_brand,
     vaccination_date,
@@ -118,7 +118,7 @@ function writeVaccination(uid, id, {
 
 }
 
-function listBrieflyVaccination(uid) { }
+async function listBrieflyVaccination(uid) { }
 
 module.exports = {
     readUserInfo,
