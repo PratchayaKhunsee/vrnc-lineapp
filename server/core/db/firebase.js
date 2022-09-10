@@ -9,8 +9,7 @@ const {
     query,
     equalTo,
     set,
-    orderByPriority,
-    orderByKey,
+
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
@@ -69,19 +68,20 @@ async function select(refPath, ...matches) {
     if (!credential) await pushPromiseLock();
     const db = getDatabase(app);
 
-    if (matches.length == 0) return await get(ref(db, refPath)).then(snapshot => snapshot.toJSON());
+    if (matches.length == 0) return await get(ref(db, refPath)).then(snapshot => snapshot.val());
 
-    const result = [];
+    const list = [];
+    (await get(ref(db, refPath))).forEach(snapshot => {
+        const v = snapshot.val();
+        for (const m of matches) {
+            if(v[m.key] === m.value){
+                list.push(v);
+                return;
+            }
+        }
+    });
 
-    for (let m of matches) {
-        const q = query(query(ref(db, refPath), orderByKey()), equalTo(m.value));
-        console.log(q.toJSON(), m.key, m.value);
-        let items = (await get(q)).val();
-
-        Array.prototype.push.apply(result, items);
-    }
-
-    return result;
+    return list;
 }
 
 /**
