@@ -1,7 +1,7 @@
 const { createErrorMessage } = require('../core/error');
-const { getUserProfile, verifyAccessToken, getLoginURL } = require('../core/line-login-api');
+const { getUserProfile } = require('../core/line-login-api');
 const { hasEmptyField } = require('../core/utils');
-const { connect } = require('../core/db');
+const database = require('../core/db');
 
 
 /**
@@ -19,26 +19,17 @@ async function saveVaccination(req, res) {
     try {
         let profile = await getUserProfile(req);
 
-        let id = Number(req.body.id);
-
-        delete req.body.id;
-
-        let save = await connect(async client => {
-            let i = 1;
-            let result = await client.query({
-                text: `UPDATE vaccination SET ${Object.keys(req.body).map((x) => `${x} = $${i++}`).join(',')} WHERE uid = $${i++} AND id = $${i}`,
-                values: [...Object.values(req.body), profile.userId, id],
-            });
-
-            if (result.rowCount != 1) throw result;
-
-            return { success: true };
+        let save = await database.writeVaccination(profile.userId, req.body.id, {
+            vaccine_name: req.body.vaccine_name,
+            vaccine_brand: req.body.vaccine_brand,
+            vaccination_date: req.body.vaccination_date,
+            vaccination_address: req.body.vaccination_address,
         });
 
         res.json(save);
 
     } catch (error) {
-        res.json({ success: false });
+        res.status(400).json({ success: false });
     }
 }
 
@@ -49,36 +40,20 @@ async function saveVaccination(req, res) {
  * @param {import('express').Response} res
  */
 async function getVaccination(req, res) {
-
     if (hasEmptyField(req.body, ['id'])) {
         res.json(createErrorMessage("required_field_missing"));
         return;
     }
 
-    /** @type {Number} */
-    let id = Number(req.body.id);
-
-
-
     try {
         let profile = await getUserProfile(req);
 
-        let vaccination = await connect(async client => {
-
-            let result = await client.query({
-                text: `SELECT id,vaccine_name,vaccine_name,vaccination_date,vaccination_address,vaccine_brand FROM vaccination WHERE uid = $1 AND id = $2`,
-                values: [profile.userId, id],
-            });
-
-            if (result.rows.length != 1) throw result;
-
-            return result.rows[0];
-        });
+        let vaccination = await database.readVaccination(profile.userId, req.body.id);
 
         res.json(vaccination);
 
     } catch (err) {
-        res.sendStatus(401);
+        res.status(401).send({ success: false });
     }
 }
 
@@ -89,51 +64,10 @@ async function getVaccination(req, res) {
  * @param {import('express').Response} res
  */
 async function createEmptyVaccination(req, res) {
-
     try {
-
         let profile = await getUserProfile(req);
 
-        let create = await connect(async client => {
-            try {
-                await client.query('BEGIN');
-
-                let user = await client.query({
-                    text: `SELECT * FROM userinfo WHERE uid = $1`,
-                    values: [profile.userId],
-                });
-
-                switch (user.rows.length) {
-                    case 0:
-                        let c = await client.query({
-                            text: `INSERT INTO userinfo(uid) VALUES($1) RETURNING *`,
-                            values: [profile.userId],
-                        });
-                        if (c.rowCount != 1) throw c;
-                        break;
-                    case 1:
-                        break;
-                    default:
-                        throw user;
-                }
-
-                let result = await client.query({
-                    text: `INSERT INTO vaccination(uid) VALUES($1) RETURNING *`,
-                    values: [profile.userId],
-                });
-
-                if (result.rows.length != 1) throw result;
-
-                await client.query('COMMIT');
-
-                return result.rows[0];
-            } catch (err) {
-                await client.query('ROLLBACK');
-                throw err;
-            }
-
-
-        });
+        let create = await database.createEmptyVaccination(profile.userId);
 
         res.write(new URLSearchParams({
             redirect: `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/vaccination?id=${create.id}`
@@ -141,7 +75,7 @@ async function createEmptyVaccination(req, res) {
         res.end();
 
     } catch (error) {
-        res.sendStatus(403);
+        res.sendStatus(400);
     }
 }
 
@@ -157,50 +91,12 @@ async function listBrieflyVaccination(req, res) {
 
         let profile = await getUserProfile(req);
 
-        let list = await connect(async client => {
-            try {
-                await client.query('BEGIN');
-
-                let user = await client.query({
-                    text: `SELECT * FROM userinfo WHERE uid = $1`,
-                    values: [profile.userId],
-                });
-
-                switch (user.rows.length) {
-                    case 0:
-                        let c = await client.query({
-                            text: `INSERT INTO userinfo(uid) VALUES($1) RETURNING *`,
-                            values: [profile.userId],
-                        });
-                        if (c.rowCount != 1) throw c;
-                        break;
-                    case 1:
-                        break;
-                    default:
-                        throw user;
-                }
-
-                await client.query('COMMIT');
-
-                let result = await client.query({
-                    text: `SELECT id,vaccine_brand FROM vaccination WHERE uid = $1`,
-                    values: [profile.userId],
-                });
-
-                return result.rows;
-            } catch (err) {
-                await client.query('ROLLBACK');
-                throw err;
-            }
-
-
-        });
+        let list = await database.listBrieflyVaccination(profile.userId);
 
         res.json(list);
-        res.end();
 
     } catch (error) {
-        res.sendStatus(403);
+        res.status(403).json(null);
     }
 }
 

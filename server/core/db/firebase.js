@@ -45,16 +45,16 @@ function pushPromiseLock() {
 
     for (var f of locks) f();
 })();
-
-
-
 class Match {
+    /**
+     * @param {String} key 
+     * @param {*} value 
+     */
     constructor(key, value) {
         this.key = key;
         this.value = value;
     }
 }
-
 
 /**
  * 
@@ -66,7 +66,6 @@ class Match {
 async function select(refPath, ...matches) {
     if (!credential) await pushPromiseLock();
     const db = getDatabase(app);
-    console.log(db.app.options);
 
     if (matches.length == 0) return await get(ref(db, refPath)).then(snapshot => snapshot.toJSON());
 
