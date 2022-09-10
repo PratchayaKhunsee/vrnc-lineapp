@@ -104,9 +104,10 @@ async function writeUserInfo(uid, data) {
 
     if (DATABASE_TYPE == "firebase") {
         await firebase.update(`userinfo/${uid}`, p);
+        return;
     }
 
-    return await pg.connect(async client => {
+    await pg.connect(async client => {
         let i = 1;
         let result = await client.query({
             text: `UPDATE userinfo SET ${Object.keys(values).map((x) => `${x} = $${i++}`).join(',')} WHERE uid = $${i}`,
@@ -115,7 +116,6 @@ async function writeUserInfo(uid, data) {
 
         if (result.rowCount != 1) throw result;
     });
-
 }
 
 /**
@@ -218,10 +218,10 @@ async function writeVaccination(uid, vid, data) {
         if (o === null || o.uid != uid) throw o;
 
         await firebase.update(`vaccination/${vid}`, p);
+        return;
     }
-
-
-    return await pg.connect(async client => {
+    
+    await pg.connect(async client => {
         let i = 1;
         let result = await client.query({
             text: `UPDATE vaccination SET ${Object.keys(data).map((x) => `${x} = $${i++}`).join(',')} WHERE uid = $${i++} AND id = $${i}`,
