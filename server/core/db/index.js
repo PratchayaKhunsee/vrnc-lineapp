@@ -239,7 +239,7 @@ async function writeVaccination(uid, vid, data) {
  */
 async function listBrieflyVaccination(uid) {
     if (DATABASE_TYPE == "firebase") {
-        return await firebase.select(`vaccination`, new firebase.Match('uid', uid));
+        return await firebase.select('vaccination', new firebase.Match('uid', uid));
     }
 
     return await pg.connect(async client => {

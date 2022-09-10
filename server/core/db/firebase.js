@@ -72,7 +72,7 @@ async function select(refPath, ...matches) {
     const result = [];
 
     for (let m of matches) {
-        let items = (await get(query(ref(db, refPath), equalTo(m.value), orderByChild(m.key)))).val();
+        let items = (await get(query(ref(db, refPath), equalTo(m.value, m.key)))).val();
         console.log(items);
         Array.prototype.push.apply(result, items);
     }
