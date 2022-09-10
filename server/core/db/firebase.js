@@ -9,6 +9,7 @@ const {
     query,
     equalTo, orderByChild,
     set,
+    child,
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
@@ -72,7 +73,8 @@ async function select(refPath, ...matches) {
     const result = [];
 
     for (let m of matches) {
-        let items = (await get(query(ref(db, refPath), equalTo(m.value, m.key)))).val();
+        const q = query(ref(db, refPath), orderByChild(m.key));
+        let items = (await get(q)).val();
         console.log(items);
         Array.prototype.push.apply(result, items);
     }
