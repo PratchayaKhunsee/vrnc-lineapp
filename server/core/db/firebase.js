@@ -1,6 +1,6 @@
 
 const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, get, push, update: updateDatabase, query, equalTo, orderByChild, orderByKey, orderByValue, set } = require('firebase/database');
+const { getDatabase, ref, get, push, update: updateDatabase, query, equalTo, orderByChild, set } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
 const adminAuth = require('firebase-admin/auth');
@@ -31,7 +31,7 @@ function pushPromiseLock() {
 (async () => {
     credential = await signInWithCustomToken(
         getAuth(app),
-        await adminAuth.getAuth(adminApp).createCustomToken(process.env.FIREBASE_CUSTOM_UID, { app: process.env.APP_NAME })
+        await adminAuth.getAuth(adminApp).createCustomToken(process.env.FIREBASE_DATABASE_ALLOWED_USER_UID)
     );
 
     for (var f of locks) f();
