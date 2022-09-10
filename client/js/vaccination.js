@@ -28,12 +28,10 @@
         try {
             let params = new URLSearchParams(location.search);
             let res = await POST('/vaccination/retrieve', {
-                id: Number(params.get('id'))
+                id: params.get('id')
             });
 
             let vaccination = await res.json();
-
-            
 
             for (let n in vaccination) {
                 data[n] = vaccination[n];
