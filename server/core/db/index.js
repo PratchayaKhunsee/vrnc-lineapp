@@ -170,7 +170,7 @@ async function readVaccination(uid, vid) {
     if (DATABASE_TYPE == "firebase") {
         let result = await firebase.select(`vaccination/${vid}`);
 
-        if (result === null) throw null;
+        if (result === null) throw result;
 
         return result;
     }

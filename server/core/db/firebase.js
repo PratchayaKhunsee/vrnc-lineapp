@@ -71,8 +71,12 @@ async function select(refPath, ...matches) {
 
     const result = [];
 
+    console.log(query);
+
     for (let m of matches) {
-        Array.prototype.push.apply(result, await get(query(ref(db, refPath), orderByChild(m.key), equalTo(m.value)).then(snapshot => snapshot.toJSON())));
+        let items = await (await get(query(ref(db, refPath), orderByChild(m.key), equalTo(m.value)))).val();
+        console.log(items);
+        Array.prototype.push.apply(result, items);
     }
 
     return result;
