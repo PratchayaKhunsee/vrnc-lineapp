@@ -71,10 +71,8 @@ async function select(refPath, ...matches) {
 
     const result = [];
 
-    console.log(query);
-
     for (let m of matches) {
-        let items = await (await get(query(ref(db, refPath), orderByChild(m.key), equalTo(m.value)))).val();
+        let items = (await get(query(ref(db, refPath), equalTo(m.value), orderByChild(m.key)))).val();
         console.log(items);
         Array.prototype.push.apply(result, items);
     }
