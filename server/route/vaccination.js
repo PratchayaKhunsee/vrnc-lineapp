@@ -53,7 +53,7 @@ async function getVaccination(req, res) {
         res.json({
             vaccine_name: data.vaccine_name,
             vaccine_brand: data.vaccine_brand,
-            vaccination_date: data.vaccination_address,
+            vaccination_date: data.vaccination_date,
             vaccination_address: data.vaccination_address,
         });
 
@@ -93,14 +93,13 @@ async function createEmptyVaccination(req, res) {
 async function listBrieflyVaccination(req, res) {
 
     try {
-
         let profile = await getUserProfile(req);
 
         let list = await database.listBrieflyVaccination(profile.userId);
 
         res.json(list);
-
     } catch (error) {
+        console.error(error);
         res.status(403).json(null);
     }
 }

@@ -31,7 +31,6 @@ async function saveUserInfo(req, res) {
         res.json({ success: true });
 
     } catch (err) {
-        console.error(err);
         res.status(401).json({ success: false });
     }
 }
