@@ -92,15 +92,15 @@ async function writeUserInfo(uid, data) {
         lastname: data.lastname,
         sex: data.sex,
         birthdate: data.birthdate,
-        address: data.birthdate,
+        address: data.address,
         tel: data.tel,
     };
-    if (typeof p.firstname !== 'string') delete p.firstname;
-    if (typeof p.lastname !== 'string') delete p.lastname;
+    if (typeof p.firstname != 'string') delete p.firstname;
+    if (typeof p.lastname != 'string') delete p.lastname;
     if (p.sex !== 0 && p.sex !== 1) delete p.sex;
-    if (typeof p.birthdate !== 'string') delete p.birthdate;
-    if (typeof p.address !== 'string') delete p.address;
-    if (typeof p.tel !== 'string') delete p.tel;
+    if (typeof p.birthdate != 'string') delete p.birthdate;
+    if (typeof p.address != 'string') delete p.address;
+    if (typeof p.tel != 'string') delete p.tel;
 
     if (DATABASE_TYPE == "firebase") {
         await firebase.update(`userinfo/${uid}`, p);

@@ -24,7 +24,7 @@ async function saveUserInfo(req, res) {
             lastname: req.body.lastname,
             sex: req.body.sex,
             birthdate: req.body.birthdate,
-            address: req.body.birthdate,
+            address: req.body.address,
             tel: req.body.tel,
         });
 
