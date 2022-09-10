@@ -77,19 +77,32 @@ async function readUserInfo(uid) {
 /**
  * 
  * @param {String} uid 
- * @param {UserInfo} values 
- * @returns {void}
+ * @param {Object} data
+ * @param {String} data.firstname
+ * @param {String} data.lastname
+ * @param {Number} data.sex
+ * @param {String} data.birthdate
+ * @param {String} data.address
+ * @param {String} data.tel 
+ * @returns {Promise<void>}
  */
-async function writeUserInfo(uid, values) {
-    if (DATABASE_TYPE == "firebase") {
-        const p = { ...values };
-        if (typeof p.firstname !== 'string') delete p.firstname;
-        if (typeof p.lastname !== 'string') delete p.lastname;
-        if (p.sex !== 0 && values.sex !== 1) delete p.sex;
-        if (typeof p.birthdate !== 'string') delete p.birthdate;
-        if (typeof p.address !== 'string') delete p.address;
-        if (typeof p.tel !== 'string') delete p.tel;
+async function writeUserInfo(uid, data) {
+    const p = {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        sex: data.sex,
+        birthdate: data.birthdate,
+        address: data.birthdate,
+        tel: data.tel,
+    };
+    if (typeof p.firstname !== 'string') delete p.firstname;
+    if (typeof p.lastname !== 'string') delete p.lastname;
+    if (p.sex !== 0 && p.sex !== 1) delete p.sex;
+    if (typeof p.birthdate !== 'string') delete p.birthdate;
+    if (typeof p.address !== 'string') delete p.address;
+    if (typeof p.tel !== 'string') delete p.tel;
 
+    if (DATABASE_TYPE == "firebase") {
         await firebase.update(`userinfo/${uid}`, p);
     }
 
@@ -185,23 +198,26 @@ async function readVaccination(uid, vid) {
  * @param {String} data.vaccination_date
  * @param {String} data.vaccination_address
  * 
- * @returns {Promise<Vaccination>} 
+ * @returns {Promise<void>} 
  */
 async function writeVaccination(uid, vid, data) {
+    const p = {
+        vaccine_name: data.vaccine_name,
+        vaccine_brand: data.vaccine_brand,
+        vaccination_date: data.vaccination_date,
+        vaccination_address: data.vaccination_address,
+    };
+    if (typeof p.vaccine_name != 'string') delete p.vaccine_name;
+    if (typeof p.vaccine_brand != 'string') delete p.vaccine_brand;
+    if (typeof p.vaccination_date != 'string') delete p.vaccination_date;
+    if (typeof p.vaccination_address != 'string') delete p.vaccination_address;
+
     if (DATABASE_TYPE == "firebase") {
         let o = await firebase.select(`vaccination/${vid}`);
 
         if (o === null || o.uid != uid) throw o;
 
-        const p = { ...data };
-        if (typeof p.vaccine_name != 'string') delete p.vaccine_name;
-        if (typeof p.vaccine_brand != 'string') delete p.vaccine_brand;
-        if (typeof p.vaccination_date != 'string') delete p.vaccination_date;
-        if (typeof p.vaccination_address != 'string') delete p.vaccination_address;
-
         await firebase.update(`vaccination/${vid}`, p);
-
-        return p;
     }
 
 
@@ -213,8 +229,6 @@ async function writeVaccination(uid, vid, data) {
         });
 
         if (result.rowCount != 1) throw result;
-
-        return { success: true };
     });
 }
 
@@ -225,7 +239,7 @@ async function writeVaccination(uid, vid, data) {
  */
 async function listBrieflyVaccination(uid) {
     if (DATABASE_TYPE == "firebase") {
-        return await firebase.select(`vaccination/${vid}`, new firebase.Match('uid', uid));
+        return await firebase.select(`vaccination`, new firebase.Match('uid', uid));
     }
 
     return await pg.connect(async client => {

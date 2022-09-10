@@ -19,14 +19,14 @@ async function saveVaccination(req, res) {
     try {
         let profile = await getUserProfile(req);
 
-        let save = await database.writeVaccination(profile.userId, req.body.id, {
+        await database.writeVaccination(profile.userId, req.body.id, {
             vaccine_name: req.body.vaccine_name,
             vaccine_brand: req.body.vaccine_brand,
             vaccination_date: req.body.vaccination_date,
             vaccination_address: req.body.vaccination_address,
         });
 
-        res.json(save);
+        res.json({ success: true });
 
     } catch (error) {
         res.status(400).json({ success: false });

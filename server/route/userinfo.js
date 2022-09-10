@@ -19,9 +19,16 @@ async function saveUserInfo(req, res) {
 
         let profile = await getUserProfile(req);
 
-        let save = await database.writeUserInfo(profile.userId, req.body);
+        await database.writeUserInfo(profile.userId, {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            sex: req.body.sex,
+            birthdate: req.body.birthdate,
+            address: req.body.birthdate,
+            tel: req.body.tel,
+        });
 
-        res.json(save);
+        res.json({ success: true });
 
     } catch (error) {
         res.status(401).json({ success: false });
@@ -43,7 +50,6 @@ async function getUserInfo(req, res) {
         res.json(userinfo);
 
     } catch (err) {
-        console.error(err);
         res.sendStatus(403);
     }
 }
