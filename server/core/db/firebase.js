@@ -74,8 +74,9 @@ async function select(refPath, ...matches) {
 
     for (let m of matches) {
         const q = query(ref(db, refPath), orderByChild(m.key));
+        console.log(q.toJSON());
         let items = (await get(q)).val();
-        console.log(items);
+        
         Array.prototype.push.apply(result, items);
     }
 
