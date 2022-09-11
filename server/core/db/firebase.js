@@ -7,9 +7,7 @@ const {
     push,
     update: updateDatabase,
     query,
-    equalTo,
     set,
-    startAt,
     orderByKey,
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
@@ -77,7 +75,7 @@ async function select(refPath, ...matches) {
         for (let m of matches) {
             let instance = snapshot.val();
 
-            if(instance[m.key] === m.value) continue;
+            if(instance[m.key] !== m.value) continue;
             list.push(instance);
             return;
         }
