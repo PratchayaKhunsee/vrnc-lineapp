@@ -330,6 +330,51 @@ dialog button:active {
     background: #0000004d;
 }
 
+.scrollable-list {
+    overflow-y: auto;
+}
+
+.scrollable-list>.item {
+    transition: background-color .3s;
+}
+
+.scrollable-list>.item:active {
+    background-color: #00000040;
+}
+
+.scrollable-list>.item:hover,
+.scrollable-list>.item:focus {
+    background-color: #00000020;
+}
+
+.scrollable-list>.item:not(:first-child) {
+    border-top: solid #404040 1px;
+}
+
+.scrollable-list>.item>details>summary {
+    padding: 10px;
+}
+
+.scrollable-list>.item>details>summary>a {
+    display: inline-block;
+}
+
+.scrollable-list>.item> a:active, .scrollable-list>.item> a:hover {
+    color: #404040;
+}
+
+.scrollable-list>.item>details>summary>a>:not(:first-child) {
+    margin-top: 5px;
+}
+
+.scrollable-list>.item>details>summary+* {
+    margin: 10px 0;
+}
+
+.scrollable-list>.item>details>:not(:first-child) {
+    margin-top: 5px;
+}
+
 /* คุณสมบัติจะถูกเปลี่ยนหากมีขนาดหน้าจอเท่ากับโทรศัพท์ */
 @media screen and (max-width: 640px) {
     @keyframes timed-popup {
