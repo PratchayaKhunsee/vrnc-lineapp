@@ -150,21 +150,13 @@ function bindDataToInputs(rules, inputs) {
                     set(x) {
                         let d = new Date(x);
                         v.setTime(d.getTime());
-                        let dd = d.getDate().toString();
-                        let MM = (d.getMonth() + 1).toString();
-                        let yyyy = d.getFullYear().toString();
-
-                        while (dd.length < 2) dd = '0' + dd;
-                        while (MM.length < 2) MM = '0' + MM;
-                        while (yyyy.length < 4) yyyy = '0' + yyyy;
-
                         switch (el.type) {
                             case 'date':
-                                el.value = `${yyyy}-${MM}-${dd}`;
+                                el.value = isNaN(d.getTime()) ? '' : d.toLocaleDateString();
                                 break;
 
                             default:
-                                el.value = d.toDateString();
+                                el.value = d.toLocaleDateString();
                                 break;
                         }
 
