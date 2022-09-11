@@ -76,7 +76,7 @@ async function select(refPath, ...matches) {
             let instance = snapshot.val();
 
             if(instance[m.key] !== m.value) continue;
-            list.push({ _key: snapshot.key, ...instance });
+            list.push({ key: snapshot.key, value: instance });
             return;
         }
     });
