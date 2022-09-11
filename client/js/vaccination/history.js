@@ -10,8 +10,6 @@
         const main = getTemplate('main').content.cloneNode(true);
         const listItem = getTemplate('list-item');
 
-
-
         try {
             let res = await GET('/vaccination/list');
             let vaccination = await res.json();
@@ -33,8 +31,8 @@
                 let details;
 
                 for (let o of item.childNodes) {
-                    if (o instanceof HTMLDetailsElement) {
-                        details = o;
+                    if (o instanceof HTMLElement) {
+                        details = o.querySelector('details');
                         break;
                     }
                 }
