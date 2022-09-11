@@ -38,10 +38,10 @@
                 }
 
                 details.querySelector('a').href = '/vaccination?id=' + id;
-                details.querySelector('vaccine_name').appendChild(new Text(values.vaccine_name));
-                details.querySelector('vaccine_brand').appendChild(new Text(values.vaccine_brand));
-                details.querySelector('vaccination_date').appendChild(new Text(values.vaccination_date));
-                details.querySelector('vaccination_address').appendChild(new Text(values.vaccination_address));
+                details.querySelector('[name=vaccine_name]').appendChild(new Text(values.vaccine_name));
+                details.querySelector('[name=vaccine_brand]').appendChild(new Text(values.vaccine_brand));
+                details.querySelector('[name=vaccination_date]').appendChild(new Text(values.vaccination_date));
+                details.querySelector('[name=vaccination_address]').appendChild(new Text(values.vaccination_address));
 
                 firstChild.appendChild(item);
             }
