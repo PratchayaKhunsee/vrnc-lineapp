@@ -15,6 +15,11 @@
     <template name="main">
         <div class="scrollable-list"></div>
     </template>
+    <template name="menu">
+        <div class="sticky-menu align-right bg-white">
+            <a href="/vaccination/create" class="button outlined">สร้างใหม่</a>
+        </div>
+    </template>
     <template name="list-item">
         <div class="item">
             <details>
@@ -33,6 +38,16 @@
                     <span name="vaccination_address"></span>
                 </div>
             </details>
+        </div>
+    </template>
+    <template name="not-found-item">
+        <div class="full-screen center-items">
+            <h1>ไม่พบรายการบันทึกการรับวัคซีน</h1>
+            <div>
+                <a href="/vaccination/create" class="button outlined">สร้างใหม่</a>
+                <a href="javascript:history.back()" class="button outlined">ย้อนกลับ</a>
+                <a href="javascript:location.reload()" class="button outlined">โหลดใหม่</a>
+            </div>
         </div>
     </template>
     <script type="text/javascript" src="../js/main.js"></script>

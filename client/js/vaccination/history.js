@@ -9,10 +9,18 @@
 
         const main = getTemplate('main').content.cloneNode(true);
         const listItem = getTemplate('list-item');
+        const menu = getTemplate('menu');
+        const notFoundItem = getTemplate('not-found-item');
 
         try {
             let res = await GET('/vaccination/list');
             let vaccination = await res.json();
+
+            if(!(vaccination instanceof Array) || vaccination.length == 0){
+                document.querySelector('main').appendChild(notFoundItem.content.cloneNode(true));
+                return;
+            }
+
             /** @type {HTMLDivElement} */
             let firstChild;
 
@@ -48,8 +56,10 @@
                 firstChild.appendChild(item);
             }
 
+            firstChild.insertBefore(menu.content.cloneNode(true), firstChild.firstChild);
             document.querySelector('main').appendChild(main);
         } catch (error) {
+
             console.error(error);
         }
     }
