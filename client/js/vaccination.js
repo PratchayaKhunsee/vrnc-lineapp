@@ -39,7 +39,21 @@
             let invalidDialogNode = invalidAlertDialog.content.cloneNode(true);
             let children = [...invalidDialogNode.childNodes];
             main.appendChild(invalidDialogNode);
-            for (let c of children) if (c instanceof HTMLDialogElement) c.showModal();
+            for (let c of children) {
+                if (c instanceof HTMLDialogElement) {
+                    c.showModal();
+                    const close = c.close;
+                    c.addEventListener("click", (e) => {
+                        var rect = e.target.getBoundingClientRect();
+                        var minX = rect.left + e.target.clientLeft;
+                        var minY = rect.top + e.target.clientTop;
+                        if ((e.clientX < minX || e.clientX >= minX + e.target.clientWidth) ||
+                            (e.clientY < minY || e.clientY >= minY + e.target.clientHeight)) {
+                            close();
+                        }
+                    });
+                }
+            }
             return;
         }
 
