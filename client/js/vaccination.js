@@ -28,7 +28,10 @@
         disableElements(form.elements, true);
 
         try {
-            let res = await POST('/vaccination/retrieve', { id: params.get('id') });
+            const id = params.get('id');
+            if (typeof id === 'string') throw id;
+
+            let res = await POST('/vaccination/retrieve', { id });
 
             let vaccination = await res.json();
 
