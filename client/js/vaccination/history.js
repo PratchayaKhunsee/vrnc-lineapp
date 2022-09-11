@@ -40,10 +40,10 @@
                 let vaccination_date = new Date(values.vaccination_date);
 
                 details.querySelector('a').href = '/vaccination?id=' + id;
-                details.querySelector('[name=vaccine_name]').appendChild(new Text(values.vaccine_name || ''));
-                details.querySelector('[name=vaccine_brand]').appendChild(new Text(values.vaccine_brand || ''));
+                details.querySelector('[name=vaccine_name]').appendChild(new Text(values.vaccine_name || '<ไม่ระบุ>'));
+                details.querySelector('[name=vaccine_brand]').appendChild(new Text(values.vaccine_brand || '-'));
                 details.querySelector('[name=vaccination_date]').appendChild(new Text(isNaN(vaccination_date.getTime()) ? '-' : vaccination_date.toLocaleDateString()));
-                details.querySelector('[name=vaccination_address]').appendChild(new Text(values.vaccination_address || ''));
+                details.querySelector('[name=vaccination_address]').appendChild(new Text(values.vaccination_address || '-'));
 
                 firstChild.appendChild(item);
             }

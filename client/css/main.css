@@ -359,13 +359,20 @@ dialog button:active {
     display: inline-block;
 }
 
-.scrollable-list>.item a:link, .scrollable-list>.item a:visited{
+.scrollable-list>.item a:link,
+.scrollable-list>.item a:visited {
     color: #606060;
     text-decoration: none;
 }
 
-.scrollable-list>.item a:active, .scrollable-list>.item a:hover {
+.scrollable-list>.item a:hover {
     color: #404040;
+    text-decoration: underline;
+}
+
+.scrollable-list>.item a:active {
+    color: green;
+    text-decoration: underline;
 }
 
 .scrollable-list>.item>details>summary>a>:not(:first-child) {
@@ -373,15 +380,15 @@ dialog button:active {
 }
 
 .scrollable-list>.item>details>summary~* {
-    margin: 0 10px;
+    padding: 0 10px;
 }
 
 .scrollable-list>.item>details>:not(:first-child) {
-    margin-top: 5px;
+    padding-top: 5px;
 }
 
 .scrollable-list>.item>details>:last-child {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 /* คุณสมบัติจะถูกเปลี่ยนหากมีขนาดหน้าจอเท่ากับโทรศัพท์ */
