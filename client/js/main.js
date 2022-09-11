@@ -152,11 +152,11 @@ function bindDataToInputs(rules, inputs) {
                         v.setTime(d.getTime());
                         switch (el.type) {
                             case 'date':
-                                el.value = isNaN(d.getTime()) ? '' : d.toLocaleDateString();
+                                el.value = isNaN(d.getTime()) ? '' : d.toJSON().replace(/T.*$/g, '');
                                 break;
 
                             default:
-                                el.value = d.toLocaleDateString();
+                                el.value = d.toJSON().replace(/T.*$/g, '');
                                 break;
                         }
 
