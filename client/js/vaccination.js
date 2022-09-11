@@ -29,7 +29,7 @@
 
         try {
             const id = params.get('id');
-            if (typeof id === 'string') throw id;
+            if (typeof id !== 'string') throw id;
 
             let res = await POST('/vaccination/retrieve', { id });
 
