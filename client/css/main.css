@@ -199,12 +199,12 @@ input[type=button]:active {
     top: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 10px;
 }
 
 .align-right {
     display: flex;
-    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 a.button {
@@ -420,8 +420,12 @@ dialog button:active {
     background-color: #00000020;
 }
 
-.scrollable-list>.item:not(:first-child) {
+.scrollable-list>:not(:first-child)~.item {
     border-top: solid #404040 1px;
+}
+
+.scrollable-list>:not(.item):first-child~:not(.item)+.item {
+    border-top: none;
 }
 
 .scrollable-list>.item>details>summary {
