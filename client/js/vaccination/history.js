@@ -50,7 +50,7 @@
 
             document.querySelector('main').appendChild(main);
         } catch (error) {
-            return;
+            console.error(error);
         }
     }
 })();
