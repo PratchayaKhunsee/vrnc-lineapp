@@ -10,7 +10,7 @@
         const main = getTemplate('main').content.cloneNode(true);
         const listItem = getTemplate('list-item');
 
-        
+
 
         try {
             let res = await GET('/vaccination/list');
@@ -18,8 +18,8 @@
             /** @type {HTMLDivElement} */
             let firstChild;
 
-            for(let o of main.childNodes){
-                if(o instanceof HTMLDivElement){
+            for (let o of main.childNodes) {
+                if (o instanceof HTMLDivElement) {
                     firstChild = o;
                     break;
                 }
@@ -27,11 +27,25 @@
 
             for (let n of vaccination) {
                 let item = listItem.content.cloneNode(true);
-                console.log(vaccination);
+                let id = typeof n.key == 'string' ? n.key : n.id;
+                let values = n.value !== null && typeof n.value == 'object' ? n.value : n;
+                /** @type {HTMLDetailsElement} */
+                let details;
+
+                for (let o of item.childNodes) {
+                    if (o instanceof HTMLDetailsElement) {
+                        details = o;
+                        break;
+                    }
+                }
+
+                details.querySelector('a').href = '/vaccination?id=' + id;
+                details.querySelector('vaccine_name').appendChild(new Text(values.vaccine_name));
+                details.querySelector('vaccine_brand').appendChild(new Text(values.vaccine_brand));
+                details.querySelector('vaccination_date').appendChild(new Text(values.vaccination_date));
+                details.querySelector('vaccination_address').appendChild(new Text(values.vaccination_address));
 
                 firstChild.appendChild(item);
-                
-                // main.childNodes.item.appendChild(item);
             }
 
             document.querySelector('main').appendChild(main);

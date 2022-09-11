@@ -74,7 +74,7 @@ body:not(.ready)> {
     display: none;
 }
 
-main {
+body.ready main {
     display: flex;
     position: absolute;
     top: 0;
