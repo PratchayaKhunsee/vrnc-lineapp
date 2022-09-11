@@ -72,9 +72,16 @@ async function select(refPath, ...matches) {
     if (matches.length == 0) return await get(ref(db, refPath)).then(snapshot => snapshot.val());
 
     const list = [];
-    const queryParams = [ref(db, refPath), orderByKey()];
-    Array.prototype.push.apply(list, matches.map(m => equalTo(m.value, m.key)));
-    (await get(query.apply(null, queryParams))).forEach(snapshot => list.push(snapshot.val()));
+
+    (await get(query(ref(db, refPath), orderByKey()))).forEach(snapshot => {
+        for (let m of matches) {
+            let instance = snapshot.val();
+
+            if(instance[m.key] === m.value) continue;
+            list.push(instance);
+            return;
+        }
+    });
 
     return list;
 }
