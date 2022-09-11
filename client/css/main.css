@@ -162,6 +162,13 @@ input[type=button]:active {
     background-color: var(--darkest-base-color);
 }
 
+.headings {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .headings a img {
     width: 16px;
     height: 16px;
@@ -447,4 +454,5 @@ dialog button:active {
         width: 100vw;
         border-radius: 0;
     }
+
 }
