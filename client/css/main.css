@@ -162,31 +162,9 @@ input[type=button]:active {
     background-color: var(--darkest-base-color);
 }
 
-.headings{
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.headings>a{
-    font-size: 12px;
-}
-
-.headings>a:link,
-.headings>a:visited {
-    color: #606060;
-    text-decoration: none;
-}
-
-.headings>a:hover {
-    color: #404040;
-    text-decoration: underline;
-}
-
-.headings>a:active {
-    color: green;
-    text-decoration: underline;
+.headings a img {
+    width: 16px;
+    height: 16px;
 }
 
 .paper {
