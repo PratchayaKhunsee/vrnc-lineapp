@@ -405,6 +405,7 @@ dialog button:active {
 
 .scrollable-list {
     overflow-y: auto;
+    max-height: 100vh;
 }
 
 .scrollable-list>.item {
