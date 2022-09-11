@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกการรับวัคซีน</title>
+    <link rel="preload" as="style" href="../css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body>
+    <main></main>
+    <template name="main">
+        <div class="scrollable-list"></div>
+    </template>
+    <template name="list-item">
+        <div class="item">
+            <details>
+                <summary>
+                    <a>
+                        <div>
+                            <div name="vaccine_name"></div>
+                        </div>
+                        <div>
+                            วันที่ฉีด:
+                            <div name="vaccination_date"></div>
+                        </div>
+                    </a>
+                </summary>
+                <div>
+                    ยี่ห้อ:
+                    <div name="vaccine_brand"></div>
+                </div>
+                <div>
+                    สถานที่ฉีด:
+                    <div name="vaccination_address"></div>
+                </div>
+            </details>
+        </div>
+    </template>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="../js/vaccination/history.js"></script>
+</body>
+
+</html>
