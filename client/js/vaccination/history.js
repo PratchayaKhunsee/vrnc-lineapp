@@ -7,15 +7,13 @@
 
     async function onrendered() {
 
-        document.body.classList.add('ready');
-
         const main = getTemplate('main').content.cloneNode(true);
         const listItem = getTemplate('list-item');
 
         document.querySelector('main').appendChild(main);
 
         try {
-            let res = await POST('/vaccination/list');
+            let res = await GET('/vaccination/list');
             let vaccination = await res.json();
 
             for (let n of vaccination) {
