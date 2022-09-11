@@ -186,6 +186,7 @@ input[type=button]:active {
 
 .center-items {
     display: inline-flex;
+    flex-flow: column wrap;
     align-items: center;
     justify-content: center;
 }
