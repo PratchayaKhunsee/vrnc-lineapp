@@ -45,6 +45,7 @@
     --bgcolor: linear-gradient(180deg, blue, lime);
     --msg-margin: 5px;
     --highlight-properties: inset white 2px 2px 4px -2px;
+    --max-px: 10000000000000000000px;
     user-select: none;
 }
 
@@ -132,11 +133,12 @@ textarea:disabled {
 
 button,
 input[type=button] {
+    border: 0;
     padding: 5px;
+    min-width: 75px;
     color: white;
     background: var(--base-color);
-    border: 0;
-    border-radius: 5px;
+    border-radius: var(--max-px);
 }
 
 button:disabled,
@@ -250,10 +252,16 @@ a.outlined.button:active {
     gap: 10px;
 }
 
+
 .mobile-compatible>.whole-line-considered {
     grid-column-start: 1;
     grid-column-end: 3;
 }
+
+.mobile-compatible-widget{
+    display: contents;
+}
+
 
 .topdown-fadein {
     animation: topdown_fadein .5s ease-out 0s 1 forwards normal;
@@ -504,6 +512,12 @@ dialog button:active {
     }
 
     .mobile-compatible>* {
+        width: 100%;
+    }
+
+    
+
+    .mobile-compatible-widget>*{
         width: 100%;
     }
 
