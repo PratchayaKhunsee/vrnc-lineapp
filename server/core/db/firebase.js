@@ -13,9 +13,9 @@ const {
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
 const adminAuth = require('firebase-admin/auth');
+const { hasEnvFile } = require('../utils');
 
-// เอาออกหากใช้บนเว็บไซต์ที่มีระบบจัดการ env
-// require('dotenv').config();
+if (hasEnvFile()) require('dotenv').config();
 
 const app = initializeApp({
     apiKey: process.env.FIREBASE_API_KEY,
