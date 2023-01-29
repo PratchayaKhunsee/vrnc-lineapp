@@ -6,18 +6,20 @@
     });
 
     async function onrendered() {
+        document.body.classList.add('ready');
 
         const main = getTemplate('main').content.cloneNode(true);
         const listItem = getTemplate('list-item');
         const menu = getTemplate('menu');
         const notFoundItem = getTemplate('not-found-item');
+        const mainElement = document.querySelector('main');
 
         try {
-            let res = await GET('/vaccination/list');
-            let vaccination = await res.json();
+            const res = await GET('/vaccination/list');
+            const vaccination = await res.json();
 
-            if(!(vaccination instanceof Array) || vaccination.length == 0){
-                document.querySelector('main').appendChild(notFoundItem.content.cloneNode(true));
+            if (!(vaccination instanceof Array) || vaccination.length == 0) {
+                mainElement.appendChild(notFoundItem.content.cloneNode(true));
                 return;
             }
 
@@ -57,7 +59,9 @@
             }
 
             firstChild.insertBefore(menu.content.cloneNode(true), firstChild.firstChild);
-            document.querySelector('main').appendChild(main);
+
+            mainElement.appendChild(main);
+
         } catch (error) {
 
             console.error(error);

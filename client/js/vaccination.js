@@ -6,8 +6,7 @@
     });
 
     async function onrendered() {
-
-        document.body.classList.add('ready');
+        document.body.classList.add('ready', 'with-bg');
 
         const params = new URLSearchParams(location.search);
         const main = document.querySelector('main');

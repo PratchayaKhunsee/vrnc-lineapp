@@ -6,7 +6,7 @@
     });
 
     async function onrendered() {
-        document.body.classList.add('ready');
+        document.body.classList.add('ready', 'with-bg');
 
         const main = document.querySelector('main');
         const failedPopup = getTemplate('failed-submit');
