@@ -6,8 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>บันทึกการรับวัคซีน</title>
-    <link rel="preload" as="style" href="../css/main.css">
-    <link rel="stylesheet" href="../css/main.css">
+    <base href="/">
+    <link rel="preload" as="style" href="css/main.css">
+    <link rel="preload" as="image" href="image/add.svg">
+    <link rel="preload" as="image" href="image/user.svg">
+    <link rel="preload" as="image" href="image/edit.svg">
+    <!-- <link rel="preload" as="image" href="image/delete.svg"> -->
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
@@ -17,18 +22,17 @@
     </template>
     <template name="menu">
         <div class="sticky-menu align-right bg-white">
-            <a href="/userinfo" class="button outlined">บัญชีผู้ใช้</a>
-            <a href="/vaccination/create" class="button outlined">สร้างใหม่</a>
+            <span>รายการบันทึกการรับวัคซีน</span>
+            <a href="userinfo" class="button outlined"><img src="image/user.svg" height="18"> บัญชีผู้ใช้</a>
+            <a href="vaccination/create" class="button outlined"><img src="image/add.svg" width="24"> สร้างใหม่</a>
         </div>
     </template>
     <template name="list-item">
         <div class="item">
             <details>
                 <summary>
-                    <a>
-                        <span name="vaccine_name"></span>
-                        (วันที่ฉีด: <span name="vaccination_date"></span>)
-                    </a>
+                    <span name="vaccine_name"></span>
+                    (วันที่ฉีด: <span name="vaccination_date"></span>)
                 </summary>
                 <div>
                     ยี่ห้อ:
@@ -38,6 +42,10 @@
                     สถานที่ฉีด:
                     <span name="vaccination_address"></span>
                 </div>
+                <div style="margin-top: 5px;">
+                    <a class="button outlined smaller"><img src="image/edit.svg" width="18"> แก้ไข</a>
+                    <!-- <a class="button outlined smaller" disabled>ลบ</a> -->
+                </div>
             </details>
         </div>
     </template>
@@ -45,14 +53,14 @@
         <div class="full-screen center-items">
             <h1>ไม่พบรายการบันทึกการรับวัคซีน</h1>
             <div>
-                <a href="/vaccination/create" class="button outlined">สร้างใหม่</a>
+                <a href="vaccination/create" class="button outlined">สร้างใหม่</a>
                 <a href="javascript:history.back()" class="button outlined">ย้อนกลับ</a>
                 <a href="javascript:location.reload()" class="button outlined">โหลดใหม่</a>
             </div>
         </div>
     </template>
-    <script type="text/javascript" src="../js/main.js"></script>
-    <script type="text/javascript" src="../js/vaccination/history.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/vaccination/history.js"></script>
 </body>
 
 </html>

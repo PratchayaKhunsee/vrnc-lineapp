@@ -9,7 +9,6 @@
   },
   "author": "Pantakarn Thebq",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.17.2",
     "firebase": "^9.9.4",
     "firebase-admin": "^11.0.1",

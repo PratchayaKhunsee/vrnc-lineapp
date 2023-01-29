@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-const cors = require('cors');
 const { auth } = require('./route/auth');
 const { login } = require('./route/login');
 const { token } = require('./route/token');
@@ -12,53 +11,98 @@ const { saveVaccination, getVaccination, createEmptyVaccination, listBrieflyVacc
  * @param {import('express').Express} app
  */
 function route(app) {
-    app.use(cors(function (req, cb) {
-        // ทำให้แอปฯ นี้สามารถใช้งานได้เฉพาะภายในโดเมนของแอปฯ นี้เท่านั้น
-        cb(null, {
-            origin: `${process.env.PROTOCOL || req.protocol}://${req.header('host')}`,
-        });
-    }), (req, res, next) => {
-        /**
-         * ทำการหาไฟล์ในโฟลเดอร์ client เพื่อแสดงผลหน้าจอกับผู้ใช้ หากไม่พบ อนุญาตให้แอปฯ ใช้ลอจิคถัดไป
-         * @type {String} 
-         **/
-        let fileFound = (function find(dirpath) {
-            let dir = fs.opendirSync(dirpath);
-            let dirent = dir.readSync();
+    // app.use(cors(function (req, cb) {
+    //     // ทำให้แอปฯ นี้สามารถใช้งานได้เฉพาะภายในโดเมนของแอปฯ นี้เท่านั้น
+    //     cb(null, {
+    //         origin: `${process.env.PROTOCOL || req.protocol}://${req.header('host')}`,
+    //     });
+    // }), (req, res, next) => {
+    //     /**
+    //      * ทำการหาไฟล์ในโฟลเดอร์ client เพื่อแสดงผลหน้าจอกับผู้ใช้ หากไม่พบ อนุญาตให้แอปฯ ใช้ลอจิคถัดไป
+    //      * @type {String} 
+    //      **/
+    //     let fileFound = (function find(dirpath) {
+    //         let dir = fs.opendirSync(dirpath);
+    //         let dirent = dir.readSync();
 
-            while (dirent) {
-                if (dirent.isDirectory()) {
-                    let found = find(dirpath + '/' + dirent.name);
-                    if (found) {
-                        dir.closeSync();
-                        return found;
-                    }
-                } else {
-                    let realfilepath = dirpath + '/' + dirent.name
-                    let filepath = realfilepath.replace(/^([A-Za-z0-9]|\.|-|_|#|\|)+/g, '');
-                    let path = req.path;
+    //         while (dirent) {
+    //             if (dirent.isDirectory()) {
+    //                 let found = find(dirpath + '/' + dirent.name);
+    //                 if (found) {
+    //                     dir.closeSync();
+    //                     return found;
+    //                 }
+    //             } else {
+    //                 let realfilepath = dirpath + '/' + dirent.name
+    //                 let filepath = realfilepath.replace(/^([A-Za-z0-9]|\.|-|_|#|\|)+/g, '');
+    //                 let path = req.path;
 
-                    if (filepath == path || filepath.match(new RegExp(path + '(\.html|\.htm)'))) {
-                        dir.closeSync();
-                        return realfilepath;
-                    }
+    //                 if (filepath == path || filepath.match(new RegExp(path + '(\.html|\.htm)'))) {
+    //                     dir.closeSync();
+    //                     return realfilepath;
+    //                 }
+    //             }
+
+    //             dirent = dir.readSync();
+    //         }
+
+    //         dir.closeSync();
+    //         return null;
+
+    //     })('client');
+
+
+    //     if (fileFound) {
+    //         res.sendFile(process.env.PWD + '/' + fileFound);
+    //     } else {
+    //         next();
+    //     }
+    // });
+
+    // /**
+    //  * 
+    //  * @param {import('express').Request} req 
+    //  * @param {(err: any, options: Object) => void} cb 
+    //  */
+    // function crossOriginCallback(req, cb) {
+    //     // ทำให้แอปฯ นี้สามารถใช้งานได้เฉพาะภายในโดเมนของแอปฯ นี้เท่านั้น
+    //     const origin = req.hostname == req.header('host');
+    //     console.log(req.headers)
+    //     cb(null, {
+    //         origin,
+    //     });
+    // }
+
+    const staticPath = 'client';
+
+
+    app.use(
+
+        (req, res, next) => {
+            const requestPath = req.path;
+            const filePath = `${require.main.path}/${staticPath}${requestPath == '/' ? '/index.html' : requestPath.replace(/\/$/, '')}`;
+            const iterator = ['', '.htm', '.html'].values();
+
+            (function find() {
+                const ext = iterator.next();
+                if (ext.done) {
+                    next();
+                    return;
                 }
 
-                dirent = dir.readSync();
-            }
+                const path = `${filePath}${ext.value}`;
 
-            dir.closeSync();
-            return null;
+                fs.stat(path, (err, stat) => {
+                    if (!err && stat && stat.isFile()) {
+                        res.sendFile(path);
+                        return;
+                    }
 
-        })('client');
-
-
-        if (fileFound) {
-            res.sendFile(process.env.PWD + '/' + fileFound);
-        } else {
-            next();
+                    find();
+                });
+            })();
         }
-    });
+    );
 
     app.get('/auth', auth);
     app.post('/login', login);
@@ -69,6 +113,10 @@ function route(app) {
     app.post('/vaccination/retrieve', express.json(), getVaccination);
     app.get('/vaccination/create/confirm', createEmptyVaccination);
     app.get('/vaccination/list', listBrieflyVaccination);
+
+    app.use(function (req, res, next) {
+        res.redirect('/404');
+    });
 }
 
 module.exports = { route };

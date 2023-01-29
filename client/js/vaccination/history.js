@@ -32,10 +32,10 @@
             }
 
             for (let n of vaccination) {
-                let item = listItem.content.cloneNode(true);
-                let id = typeof n.key == 'string' ? n.key : n.id;
-                let values = n.value !== null && typeof n.value == 'object' ? n.value : n;
-                /** @type {HTMLDetailsElement} */
+                const item = listItem.content.cloneNode(true);
+                const id = typeof n.key == 'string' ? n.key : n.id;
+                const values = n.value !== null && typeof n.value == 'object' ? n.value : n;
+                /** @type {HTMLDetailsElement?} */
                 let details;
 
                 for (let o of item.childNodes) {
@@ -45,7 +45,7 @@
                     }
                 }
 
-                let vaccination_date = new Date(values.vaccination_date);
+                const vaccination_date = new Date(values.vaccination_date);
 
                 details.querySelector('a').href = '/vaccination?id=' + id;
                 details.querySelector('[name=vaccine_name]').appendChild(new Text(values.vaccine_name || '<ไม่ระบุ>'));

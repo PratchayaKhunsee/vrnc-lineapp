@@ -62,13 +62,13 @@ function request(header, body) {
 }
 
 /**
- * ฟังก์ชันนี้ไว้ใช้ล็อกอินเว็บผ่านแพล็ตฟอร์มของ Line ก่อนใช้งานจริง
+ * ฟังก์ชันนี้ไว้ใช้ล็อกอินเว็บผ่านแพล็ตฟอร์มของ Line ก่อนใช้งานแอป
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 function login(req, res) {
-    let url = new URL('https://access.line.me/oauth2/v2.1/authorize');
-    let params = {
+    const url = new URL('https://access.line.me/oauth2/v2.1/authorize');
+    const params = {
         'response_type': 'code',
         'client_id': process.env.LINE_CLIENT_ID,
         'redirect_uri': `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/auth?redirect=${process.env.PROTOCOL || req.protocol}://${req.headers.host}${req.url}`,
@@ -90,8 +90,8 @@ function login(req, res) {
  * @param {String} redirect
  */
 function getLoginURL(req, redirect) {
-    let url = new URL('https://access.line.me/oauth2/v2.1/authorize');
-    let params = {
+    const url = new URL('https://access.line.me/oauth2/v2.1/authorize');
+    const params = {
         'response_type': 'code',
         'client_id': process.env.LINE_CLIENT_ID,
         'redirect_uri': `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/auth?redirect=${process.env.PROTOCOL || req.protocol}://${req.headers.host}${redirect}`,
@@ -126,7 +126,7 @@ function verifyLoginState(state) {
  * @param {import('express').Request} req
  */
 function requestAccessToken(req) {
-    let url = new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`);
+    const url = new URL(req.url, `${process.env.PROTOCOL || req.protocol}://${req.headers.host}`);
     /** @type {String} */
     let code = '';
     let otherParams = {};
@@ -146,12 +146,12 @@ function requestAccessToken(req) {
         }
     }
 
-    let params = Object.entries(otherParams).map(x => x[0] + '=' + x[1]).join('&');
+    const params = Object.entries(otherParams).map(x => x[0] + '=' + x[1]).join('&');
 
     /**
      * @type {import('https').RequestOptions}
      */
-    let header = {
+    const header = {
         method: 'POST',
         hostname: 'api.line.me',
         path: '/oauth2/v2.1/token',
@@ -179,7 +179,7 @@ function verifyAccessToken(token) {
     /**
      * @type {import('https').RequestOptions}
      */
-    let header = {
+    const header = {
         method: 'GET',
         hostname: 'api.line.me',
         path: `/oauth2/v2.1/verify?access_token=${token}`,
@@ -204,7 +204,7 @@ function verifyAccessToken(token) {
  * @param {()=>void} success  
  */
 function authenticate(req, res, success) {
-    let auth = typeof req.headers.authorization == 'string' ? req.headers.authorization.split(' ') : null;
+    const auth = typeof req.headers.authorization == 'string' ? req.headers.authorization.split(' ') : null;
     if (auth == null) {
         login(req, res);
         return;
@@ -232,7 +232,7 @@ function getUserProfile(req) {
     /**
      * @type {import('https').RequestOptions}
      */
-    let header = {
+    const header = {
         method: 'GET',
         hostname: 'api.line.me',
         path: '/v2/profile',
