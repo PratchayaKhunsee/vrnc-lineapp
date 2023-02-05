@@ -128,6 +128,11 @@ body.ready main{
     visibility: visible;
 }
 
+body.prevent-prompt{
+    pointer-events: none;
+    opacity: .5;
+}
+
 .top {
     display: flex;
     flex-flow: column nowrap;
@@ -287,17 +292,27 @@ a.button {
     border-radius: 5px;
 }
 
+button.smaller,
 a.button.smaller {
     padding: 2px 5px;
     font-size: 0.8rem;
+    min-width: 0;
 }
 
+button.outlined{
+    border-radius: 5px;
+    color: #606060;
+    border: solid #606060 1px;
+}
+
+button.outlined,
 a.outlined.button {
     background-color: transparent;
     display: inline-flex;
     align-items: center;
 }
 
+button.outlined+button.outlined,
 a.outlined.button+a.outlined.button {
     margin-left: 5px;
 }
@@ -306,19 +321,19 @@ a.outlined.button:link,
 a.outlined.button:visited {
     border: solid #606060 1px;
     color: #606060;
-    text-decoration: none;
 }
 
+
+button.outlined:hover,
 a.outlined.button:hover {
     border: solid #404040 1px;
     color: #404040;
-    text-decoration: none;
 }
 
+button.outlined:active,
 a.outlined.button:active {
     border: solid green 1px;
     color: green;
-    text-decoration: none;
 }
 
 .paper {
@@ -369,6 +384,13 @@ a.outlined.button:active {
     z-index: 1000;
     box-shadow: var(--shadow-properties), var(--highlight-properties);
     border-radius: 5px;
+    animation: timed-popup 4s linear 0s 1 forwards normal;
+    pointer-events: none;
+}
+
+.timed-popup.bw {
+    color: #000;
+    background: #fff;
     animation: timed-popup 4s linear 0s 1 forwards normal;
 }
 
@@ -444,6 +466,7 @@ dialog {
     display: flex;
     flex-flow: column nowrap;
     box-shadow: var(--shadow-properties);
+    user-select: none;
 }
 
 dialog:not([open]) {
@@ -617,6 +640,7 @@ dialog button:active {
         height: fit-content;
         width: 100vw;
         border-radius: 0;
+        pointer-events: visible;
     }
 
 }

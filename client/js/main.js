@@ -3,8 +3,8 @@
  * @param {*} body 
  */
 async function authenticate(body = null) {
-    let auth = localStorage.getItem('authorization');
-    let headers = {
+    const auth = localStorage.getItem('authorization');
+    const headers = {
         'content-type': 'application/x-www-from-urlencoded',
     };
 
@@ -12,7 +12,7 @@ async function authenticate(body = null) {
         headers['authorization'] = `Bearer ${auth}`;
     }
 
-    let res = await fetch('/login', {
+    const res = await fetch('/login', {
         method: 'POST',
         headers,
         body,
@@ -126,8 +126,8 @@ function disableElements(elements, disabled = true) {
  */
 function bindDataToInputs(rules, inputs) {
 
-    let data = {};
-    let bind = {};
+    const data = {};
+    const bind = {};
 
     for (let el of inputs) {
 

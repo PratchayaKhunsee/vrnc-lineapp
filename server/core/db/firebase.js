@@ -9,6 +9,7 @@ const {
     query,
     set,
     orderByKey,
+    remove: removeByRef,
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
@@ -75,7 +76,7 @@ async function select(refPath, ...matches) {
         for (let m of matches) {
             let instance = snapshot.val();
 
-            if(instance[m.key] !== m.value) continue;
+            if (instance[m.key] !== m.value) continue;
             list.push({ key: snapshot.key, value: instance });
             return;
         }
@@ -110,7 +111,27 @@ async function update(refPath, values) {
     if (!credential) await pushPromiseLock();
     const db = getDatabase(app);
 
+    (await get(query(ref(db, refPath), orderByKey()))).forEach(snapshot => {
+        
+    });
+
     return await updateDatabase(ref(db, refPath), values);
 }
 
-module.exports = { insert, select, update, Match, };
+/**
+ * 
+ * @param {String} refPath 
+ * @param {String} uid
+ */
+async function remove(refPath, uid) {
+    if (!credential) await pushPromiseLock();
+    const db = getDatabase(app);
+
+    const result = (await get(ref(db, refPath))).val();
+
+    if(!result || result.uid !== uid) return false;
+
+    return await removeByRef(ref(db, refPath)).then(() => true).catch(() => false);
+}
+
+module.exports = { insert, select, update, remove, Match, };

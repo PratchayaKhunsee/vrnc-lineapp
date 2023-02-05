@@ -220,7 +220,7 @@ async function writeVaccination(uid, vid, data) {
         await firebase.update(`vaccination/${vid}`, p);
         return;
     }
-    
+
     await pg.connect(async client => {
         let i = 1;
         let result = await client.query({
@@ -259,6 +259,29 @@ async function listBrieflyVaccination(uid) {
     });
 }
 
+/**
+ * @param {String} uid
+ * @param {String} vid
+ * @returns {Promise<boolean>} 
+ */
+async function removeVaccination(uid, vid) {
+    if (DATABASE_TYPE == "firebase") {
+        return await firebase.remove(`vaccination/${vid}`, uid);
+    }
+
+
+    return await pg.connect(async client => {
+        const result = await client.query({
+            text: `DELETE FROM vaccination WHERE vid = $1 AND uid = $2`,
+            values: [vid, uid],
+        });
+
+        if (result.rowCount != 1) return false;
+
+        return true;
+    });
+}
+
 module.exports = {
     readUserInfo,
     writeUserInfo,
@@ -266,4 +289,5 @@ module.exports = {
     readVaccination,
     writeVaccination,
     listBrieflyVaccination,
+    removeVaccination,
 };

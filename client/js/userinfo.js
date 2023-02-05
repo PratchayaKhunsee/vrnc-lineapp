@@ -28,9 +28,9 @@
         disableElements(form.elements, true);
 
         try {
-            let res = await GET('/userinfo/retrieve');
+            const res = await GET('/userinfo/retrieve');
 
-            let userinfo = await res.json();
+            const userinfo = await res.json();
 
             for (let n in userinfo) {
                 data[n] = userinfo[n];
@@ -48,18 +48,18 @@
             try {
                 const res = await POST('userinfo/save', data);
 
-                let result = await res.json();
+                const result = await res.json();
 
                 if (result.error) {
-                    let popup = failedPopup.content.cloneNode(true);
-                    let children = [...popup.childNodes];
+                    const popup = failedPopup.content.cloneNode(true);
+                    const children = [...popup.childNodes];
                     main.appendChild(popup);
                     setTimeout(() => {
                         for (let n of children) main.removeChild(n);
                     }, 4000);
                 } else {
-                    let popup = successPopup.content.cloneNode(true);
-                    let children = [...popup.childNodes];
+                    const popup = successPopup.content.cloneNode(true);
+                    const children = [...popup.childNodes];
                     main.appendChild(popup);
                     setTimeout(() => {
                         for (let n of children) main.removeChild(n);

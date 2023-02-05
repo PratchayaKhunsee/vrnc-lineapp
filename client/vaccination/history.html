@@ -11,7 +11,7 @@
     <link rel="preload" as="image" href="image/add.svg">
     <link rel="preload" as="image" href="image/user.svg">
     <link rel="preload" as="image" href="image/edit.svg">
-    <!-- <link rel="preload" as="image" href="image/delete.svg"> -->
+    <link rel="preload" as="image" href="image/delete.svg">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -23,8 +23,8 @@
     <template name="menu">
         <div class="sticky-menu align-right bg-white">
             <span>รายการบันทึกการรับวัคซีน</span>
-            <a href="userinfo" class="button outlined"><img src="image/user.svg" height="18"> บัญชีผู้ใช้</a>
-            <a href="vaccination/create" class="button outlined"><img src="image/add.svg" width="24"> สร้างใหม่</a>
+            <a href="userinfo" class="button outlined" title="บัญชีผู้ใช้"><img src="image/user.svg" height="18"> บัญชีผู้ใช้</a>
+            <a href="vaccination/create" class="button outlined" title="สร้างบันทึกการรับวัคซีนใหม่"><img src="image/add.svg" width="24"> สร้างใหม่</a>
         </div>
     </template>
     <template name="list-item">
@@ -43,8 +43,8 @@
                     <span name="vaccination_address"></span>
                 </div>
                 <div style="margin-top: 5px;">
-                    <a class="button outlined smaller"><img src="image/edit.svg" width="18"> แก้ไข</a>
-                    <!-- <a class="button outlined smaller" disabled>ลบ</a> -->
+                    <button class="button outlined smaller" title="แก้ไข"><img src="image/edit.svg" width="18"> แก้ไข</button>
+                    <button class="outlined smaller" title="ลบ"><img src="image/delete.svg" width="18"> ลบ</button>
                 </div>
             </details>
         </div>
@@ -58,6 +58,26 @@
                 <a href="javascript:location.reload()" class="button outlined">โหลดใหม่</a>
             </div>
         </div>
+    </template>
+    <template name="deletion-dialog">
+        <dialog>
+            <div class="title">
+                คำเตือน
+            </div>
+            <div class="content">
+                คุณกำลังลบรายการที่เลือกอยู่อย่างถาวร ยืนยันหรือไม่
+            </div>
+            <div class="actions">
+                <button data-action="confirm">ตกลง</button>
+                <button data-action="close">ยกเลิก</button>
+            </div>
+        </dialog>
+    </template>
+    <template name="successful-deletion">
+        <div class="timed-popup bw"><span class="correct"></span>ลบข้อมูลสำเร็จ</div>
+    </template>
+    <template name="failed-deletion">
+        <div class="timed-popup bw"><span class="wrong"></span>ไม่สามารถลบข้อมูลได้</div>
     </template>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/vaccination/history.js"></script>

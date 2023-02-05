@@ -30,9 +30,9 @@
             const id = params.get('id');
             if (typeof id !== 'string') throw id;
 
-            let res = await POST('/vaccination/retrieve', { id });
+            const res = await POST('/vaccination/retrieve', { id });
 
-            let vaccination = await res.json();
+            const vaccination = await res.json();
 
             for (let n in vaccination) {
                 data[n] = vaccination[n];
@@ -44,13 +44,16 @@
             for (let c of children) {
                 if (c instanceof HTMLDialogElement) {
                     c.showModal();
-                    c.addEventListener("click", (e) => {
-                        var rect = e.target.getBoundingClientRect();
-                        var minX = rect.left + e.target.clientLeft;
-                        var minY = rect.top + e.target.clientTop;
-                        if ((e.clientX < minX || e.clientX >= minX + e.target.clientWidth) ||
-                            (e.clientY < minY || e.clientY >= minY + e.target.clientHeight)) {
-                            e.target.close();
+                    c.addEventListener("click", function onDialogClick(e) {
+                        e.preventDefault();
+                        const rect = this.getBoundingClientRect();
+    
+                        if ((e.clientX < rect.left || e.clientX > rect.left + rect.width) ||
+                            (e.clientY < rect.top || e.clientY > rect.top + rect.height)) {
+                            this.close();
+                            this.remove();
+    
+                            this.removeEventListener("click", onDialogClick);
                         }
                     });
                 }

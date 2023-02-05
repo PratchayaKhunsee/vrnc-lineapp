@@ -1,5 +1,5 @@
 (() => {
-    let url = new URL(location.toString());
+    const url = new URL(location.toString());
     fetch('/token/get', {
         method: 'POST',
         headers: {
@@ -7,8 +7,8 @@
         },
         body: url.searchParams.toString(),
     }).then(async res => {
-        let text = await res.text();
-        let splited = text.split(' ');
+        const text = await res.text();
+        const splited = text.split(' ');
         if (splited.length == 2) {
             localStorage.setItem('authorization', splited[1]);
             location.assign(url.searchParams.get('redirect'));

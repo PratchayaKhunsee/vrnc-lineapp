@@ -104,9 +104,28 @@ async function listBrieflyVaccination(req, res) {
     }
 }
 
+/**
+ * ลอจิกสำหรับลบข้อมูลการรับวัคซีน
+ * 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+async function removeVaccination(req, res) {
+
+    try {
+        const profile = await getUserProfile(req);
+
+        res.json({ status: await database.removeVaccination(profile.userId, req.body.id), });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json(null);
+    }
+}
+
 module.exports = {
     saveVaccination,
     getVaccination,
     createEmptyVaccination,
     listBrieflyVaccination,
+    removeVaccination,
 };
