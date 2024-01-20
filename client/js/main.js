@@ -50,7 +50,7 @@ async function initLiff() {
  * @returns {string?}
  */
 async function getAuthToken(){
-    if(liff.isInClient()) return liff.getTokenID();
+    if(liff.isInClient()) return liff.getIDToken();
 
     return localStorage.getItem('authorization');
 }
