@@ -1,3 +1,5 @@
+const LOGIN_IGNORING_REDIR = Symbol('ignore');
+
 /**
  * ฟังกชันสำหรับการตรวจสอบการเข้าสู่ระบบ
  * @param {*} body 
@@ -38,12 +40,8 @@ async function initLiff() {
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
 
         if(!liff.isLoggedIn()) await liff.login();
-
-        document.body.appendChild(document.createTextNode('Logging in...'));
     } catch (error) {
         console.error(error);
-
-        document.body.appendChild(document.createTextNode(`${error}`));
     }
 }
 
