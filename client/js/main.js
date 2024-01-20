@@ -39,7 +39,7 @@ async function initLiff() {
 
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
 
-        if(!liff.isLoggedIn()) await liff.login();
+        // if(!liff.isLoggedIn()) await liff.login();
     } catch (error) {
         console.error(error);
     }
