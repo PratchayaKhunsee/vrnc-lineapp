@@ -40,6 +40,8 @@ async function initLiff() {
             await liff.login();
         }
 
+        alert(liff.getIDToken());
+
         localStorage.setItem('authorization', liff.getIDToken());
     } catch (error) {
         console.error(error);
