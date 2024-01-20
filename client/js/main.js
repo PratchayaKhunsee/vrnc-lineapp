@@ -31,21 +31,18 @@ async function authenticate(body = null) {
  */
 async function initLiff() {
     try {
-        await liff.init({
-            liffId: '1656071963-6OqLKl7G',
-            // liffId: '1656071963-E7q8KNWO'
-        });
+        if(!liff.isInClient()) return;
+        
 
+        await liff.init({ liffId: '1656071963-6OqLKl7G' });
 
-        if(liff.isInClient()){
-            return;
+        if(!liff.isLoggedIn()) {
+            await liff.login();
         }
 
-        if(liff.isLoggedIn()) {
-            localStorage.setItem('authorization', liff.getAccessToken());
-        }
+        localStorage.setItem('authorization', liff.getIDToken());
     } catch (error) {
-        console.warn(error);
+        console.error(error);
     }
 }
 
