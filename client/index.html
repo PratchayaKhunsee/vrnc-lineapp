@@ -14,7 +14,7 @@
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 
-<body class="centered include-text">
+<body class="centered include-text" style="display: none;">
     <section>
         <h1>แอปพลิเคชันบันทึกการรับวัคซีนโดยใช้ Line</h1>
         <div>เข้าใช้งานแอปพลิเคชันผ่านลิงค์ดังนี้</div>
@@ -29,6 +29,14 @@
         </div>
         
     </section>
+    <script>
+        (async()=> {
+
+            await initLiff();
+
+            document.body.style.display = '';
+        })();
+    </script>
 </body>
 
 </html>

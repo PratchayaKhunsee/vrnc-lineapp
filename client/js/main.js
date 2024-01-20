@@ -3,6 +3,7 @@
  * @param {*} body 
  */
 async function authenticate(body = null) {
+    await initLiff();
     const auth = getAuthToken();
     const headers = {
         'content-type': 'application/x-www-from-urlencoded',
@@ -26,11 +27,26 @@ async function authenticate(body = null) {
 }
 
 /**
+ * ใช้งาน Line LIFF API 
+ * 
+ * @returns {Promise<string>}
+ */
+async function initLiff() {
+    try {
+        if(!liff.isInClient()) return;
+
+        await liff.init({ liffId: '1656071963-6OqLKl7G' });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/**
  * รับค่าโทเค่น
  * @returns {string?}
  */
 async function getAuthToken(){
-     return localStorage.getItem('authorization');
+    return localStorage.getItem('authorization');
 }
 
 /**

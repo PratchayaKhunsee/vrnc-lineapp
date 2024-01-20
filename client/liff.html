@@ -22,6 +22,7 @@
 
                 if(liff.isLoggedIn()) localStorage.setItem('authorization', liff.getIDToken());
             } catch (error) {
+                console.log(`${error}`);
             }
 
             location.replace('/');
