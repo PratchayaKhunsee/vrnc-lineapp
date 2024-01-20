@@ -36,7 +36,7 @@
                 data[n] = userinfo[n];
             }
         } catch (error) {
-            alert(error);
+            
             return;
         }
 
