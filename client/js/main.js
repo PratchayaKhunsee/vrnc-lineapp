@@ -29,19 +29,21 @@ async function authenticate(body = null) {
 /**
  * ใช้งาน Line LIFF API 
  * 
- * @returns {Promise<string?>}
+ * @returns {Promise<string>}
  */
 async function initLiff() {
     try {
-        if(!liff.isInClient()) return null;
+        if(!liff.isInClient()) return;
 
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
 
-        if(!liff.isLoggedIn()) {
-            await liff.login();
-        }
+        if(!liff.isLoggedIn()) await liff.login();
+
+        document.body.appendChild(document.createTextNode('Logging in...'));
     } catch (error) {
         console.error(error);
+
+        document.body.appendChild(document.createTextNode(`${error}`));
     }
 }
 
