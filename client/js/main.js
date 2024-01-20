@@ -4,7 +4,7 @@
  */
 async function authenticate(body = null) {
     await initLiff();
-    const auth = localStorage.getItem('authorization');
+    const auth = getAuthToken();
     const headers = {
         'content-type': 'application/x-www-from-urlencoded',
     };
@@ -28,24 +28,31 @@ async function authenticate(body = null) {
 
 /**
  * ใช้งาน Line LIFF API 
+ * 
+ * @returns {Promise<string?>}
  */
 async function initLiff() {
     try {
-        if(!liff.isInClient()) return;
-        
+        if(!liff.isInClient()) return null;
 
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
 
         if(!liff.isLoggedIn()) {
             await liff.login();
         }
-
-        alert(liff.getIDToken());
-
-        localStorage.setItem('authorization', liff.getIDToken());
     } catch (error) {
         console.error(error);
     }
+}
+
+/**
+ * รับค่าโทเค่น
+ * @returns {string?}
+ */
+async function getAuthToken(){
+    if(!liff.isInClient()) return localStorage.getItem('authorization');
+
+    return liff.getIDToken();
 }
 
 
@@ -55,7 +62,7 @@ async function initLiff() {
  * @param {*} body 
  */
 async function POST(url, body = null) {
-    let auth = localStorage.getItem('authorization');
+    let auth = getAuthToken();
     let headers = {};
 
     if (auth) {
@@ -101,7 +108,7 @@ async function POST(url, body = null) {
  * @param {*} body 
  */
 async function GET(url) {
-    let auth = localStorage.getItem('authorization');
+    let auth = getAuthToken();
     let headers = {};
 
     if (auth) {
