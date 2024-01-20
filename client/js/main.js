@@ -3,7 +3,8 @@
  * @param {*} body 
  */
 async function authenticate(body = null) {
-    await initLiff();
+    if((await initLiff()) !== null) return;
+
     const auth = getAuthToken();
     const headers = {
         'content-type': 'application/x-www-from-urlencoded',
@@ -33,11 +34,14 @@ async function authenticate(body = null) {
  */
 async function initLiff() {
     try {
-        if(!liff.isInClient()) return;
+        if(!liff.isInClient()) return null;
 
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
+
+        return true;
     } catch (error) {
         console.error(error);
+        return false;
     }
 }
 
@@ -46,6 +50,8 @@ async function initLiff() {
  * @returns {string?}
  */
 async function getAuthToken(){
+    if(liff.isInClient()) return liff.getTokenID();
+
     return localStorage.getItem('authorization');
 }
 
