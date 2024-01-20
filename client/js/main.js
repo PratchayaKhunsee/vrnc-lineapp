@@ -49,7 +49,7 @@ async function initLiff() {
  * รับค่าโทเค่น
  * @returns {string?}
  */
-async function getAuthToken(){
+function getAuthToken(){
     if(liff.isInClient()) return liff.getIDToken();
 
     return localStorage.getItem('authorization');
