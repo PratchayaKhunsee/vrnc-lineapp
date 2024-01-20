@@ -19,6 +19,8 @@
                 if(!liff.isInClient()) return;
 
                 await liff.init({ liffId: '1656071963-6OqLKl7G' });
+
+                if(liff.isLoggedIn()) localStorage.setItem('authorization', liff.getIDToken());
             } catch (error) {
             }
 
