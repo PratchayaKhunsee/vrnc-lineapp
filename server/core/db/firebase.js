@@ -10,13 +10,11 @@ const {
     set,
     orderByKey,
     remove: removeByRef,
+    runTransaction
 } = require('firebase/database');
 const { getAuth, signInWithCustomToken } = require('firebase/auth');
 const admin = require('firebase-admin/app');
 const adminAuth = require('firebase-admin/auth');
-const { hasEnvFile } = require('../utils');
-
-if (hasEnvFile()) require('dotenv').config();
 
 const app = initializeApp({
     apiKey: process.env.FIREBASE_API_KEY,
@@ -27,7 +25,7 @@ const app = initializeApp({
 });
 
 const adminApp = admin.initializeApp({
-    credential: admin.cert(require(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)),
+    credential: admin.cert(require.main.require(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)),
     projectId: process.env.FIREBASE_PROJECT_ID,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
 });
@@ -134,4 +132,15 @@ async function remove(refPath, uid) {
     return await removeByRef(ref(db, refPath)).then(() => true).catch(() => false);
 }
 
-module.exports = { insert, select, update, remove, Match, };
+/**
+ * 
+ * @param {String} refPath 
+ */
+async function increaseByOne(refPath){
+    if (!credential) await pushPromiseLock();
+    const db = getDatabase(app);
+
+    return (await runTransaction(ref(db, refPath), (value) =>  typeof value === 'number' ? value++ : (value === null || value === undefined ? 0 : value))).committed;
+}
+
+module.exports = { insert, select, update, remove, increaseByOne, Match, };

@@ -1,9 +1,6 @@
 const express = require('express');
 const { route } = require('./server');
 const app = express();
-const { hasEnvFile } = require('./server/core/utils');
-
-if (hasEnvFile()) require('dotenv').config();
 
 route(app);
 

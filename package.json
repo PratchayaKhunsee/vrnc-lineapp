@@ -4,21 +4,21 @@
   "description": "A web server for Line application.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "export OPENSSL_CONF=/dev/null; NODE_ENV=development nodemon index.js",
+    "start": "export OPENSSL_CONF=/dev/null; NODE_ENV=production node index.js"
   },
   "author": "Pantakarn Thebq",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "express": "^4.17.2",
     "firebase": "^9.9.4",
     "firebase-admin": "^11.0.1",
     "node-cache": "^5.1.2",
-    "pdfkit": "^0.13.0",
     "pg": "^8.7.3"
   },
   "devDependencies": {
     "dotenv": "^14.3.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^3.0.3"
   },
   "engines": {
     "node": "16.x"

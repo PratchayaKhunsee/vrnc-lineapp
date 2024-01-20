@@ -3,9 +3,6 @@ const crypto = require('crypto');
 const cache = require('./cache');
 const { URL } = require('url');
 
-// เอาออกหากใช้บนเว็บไซต์ที่มีระบบจัดการ env
-// require('dotenv').config();
-
 /**
  * สร้างข้อความรูปแบบ URL-encoded จากอ็อปเจคต้นแบบ
  * @param {Object<string, string>} params

@@ -3,6 +3,7 @@
  * @param {*} body 
  */
 async function authenticate(body = null) {
+    await initLiff();
     const auth = localStorage.getItem('authorization');
     const headers = {
         'content-type': 'application/x-www-from-urlencoded',
@@ -22,6 +23,29 @@ async function authenticate(body = null) {
         let params = new URLSearchParams(await res.text());
         if (params.has('redirect')) location.assign(params.get('redirect'));
         throw res.status;
+    }
+}
+
+/**
+ * ใช้งาน Line LIFF API 
+ */
+async function initLiff() {
+    try {
+        await liff.init({
+            liffId: '1656071963-6OqLKl7G',
+            // liffId: '1656071963-E7q8KNWO'
+        });
+
+
+        if(liff.isInClient()){
+            return;
+        }
+
+        if(liff.isLoggedIn()) {
+            localStorage.setItem('authorization', liff.getAccessToken());
+        }
+    } catch (error) {
+        console.warn(error);
     }
 }
 

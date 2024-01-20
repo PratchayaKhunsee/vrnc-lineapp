@@ -29,7 +29,26 @@ function hasEnvFile() {
     }
 }
 
+/**
+ * เรียกใช้งานโมดูล dotenv
+ */
+function initDotEnv(){
+    if(isEnvOn('development')) return require('dotenv').config();
+}
+
+/**
+ * ตรวจสอบว่าเซิร์ฟเวอร์ู่ในโหมด production หรือ development
+ * 
+ * @param {'production'|'development'} mode
+ * @returns {boolean}
+ */
+function isEnvOn(mode){
+    return process.env.NODE_ENV === mode;
+}
+
 module.exports = {
     hasEmptyField,
     hasEnvFile,
+    isEnvOn,
+    initDotEnv,
 }
