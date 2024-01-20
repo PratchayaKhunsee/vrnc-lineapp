@@ -5,23 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ข้อมูลส่วนตัวผู้ใช้</title>
+    <title>Initializing...</title>
     <base href="/">
     <link rel="preload" as="style" href="css/main.css">
-    <link rel="preload" as="image" href="image/history.svg">
     <link rel="stylesheet" href="css/main.css">
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 
 <body>
-    <main class="top"></main>
-
-
-    <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
-        authenticate(LOGIN_IGNORING_REDIR).then(x => {
-            document.body.appendChild(document.createTextNode(`${liff.getIDToken()}`));
-        });
+        (async function(){
+            try {
+                if(!liff.isInClient()) return;
+
+                await liff.init({ liffId: '1656071963-6OqLKl7G' });
+            } catch (error) {
+            }
+
+            location.replace('/');
+        })();
     </script>
 </body>
 

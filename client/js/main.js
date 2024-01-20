@@ -1,5 +1,3 @@
-const LOGIN_IGNORING_REDIR = Symbol('ignore');
-
 /**
  * ฟังกชันสำหรับการตรวจสอบการเข้าสู่ระบบ
  * @param {*} body 
@@ -38,8 +36,6 @@ async function initLiff() {
         if(!liff.isInClient()) return;
 
         await liff.init({ liffId: '1656071963-6OqLKl7G' });
-
-        // if(!liff.isLoggedIn()) await liff.login();
     } catch (error) {
         console.error(error);
     }
@@ -54,7 +50,6 @@ async function getAuthToken(){
 
     return liff.getIDToken();
 }
-
 
 /**
  * ร้องขอการเข้าสู่เว็บไซต์ผ่าน URL
