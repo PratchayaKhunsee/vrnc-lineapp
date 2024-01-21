@@ -29,13 +29,13 @@ const DATABASE_TYPE = process.env.DATABASE_TYPE;
 function fmt(number, digits = 2) {
     const stringNumber = `${Math.floor(number)}`;
     const gap = digits - stringNumber.length;
-    return `${ '0'.repeat(gap < 0 ? 0 : gap)}${number}`;
+    return `${'0'.repeat(gap < 0 ? 0 : gap)}${stringNumber}`;
 }
 
 
 async function increaseUserCounter() {
     const date = new Date();
-    return await firebase.increaseByOne(`userinfo/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth() + 1)}-${fmt(date.getUTCDate())}`);
+    return await firebase.increaseByOne(`userinfo/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth() + 1)}-${fmt(date.getUTCDate())}/create`);
 }
 
 /**
