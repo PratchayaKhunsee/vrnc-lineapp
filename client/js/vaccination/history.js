@@ -128,7 +128,7 @@
     function editThis() {
         const id = itemIds.get(this);
         if (typeof id !== 'string') return;
-        location.assign('/vaccination?id=' + id);
+        location.assign('/vaccination/edit?id=' + id);
     }
 
     async function onrendered() {
