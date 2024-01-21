@@ -50,7 +50,6 @@ function request(header, body) {
         });
 
         if (header.method != 'GET' && header.method != 'HEAD' && body !== undefined) {
-
             req.write(body);
         }
 
@@ -226,21 +225,25 @@ function authenticate(req, res, success) {
  * @returns {Promise<LineUserProfile>}
  */
 function getUserProfile(req) {
-    console.log(req.headers);
+    const authorization = req.headers.authorization;
+    const userAgent = req.headers['user-agent'];
+    const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
+
+    console.log(isLiffAppRequest);
+
     /**
      * @type {import('https').RequestOptions}
      */
     const header = {
-        method: 'GET',
+        method: isLiffAppRequest ? 'POST' : 'GET',
         hostname: 'api.line.me',
-        path: '/v2/profile',
+        path: isLiffAppRequest ? '/oauth/v2.1/verify' : '/v2/profile',
         port: 443,
-        headers: {
-            'authorization': req.headers.authorization,
-        },
+        headers: isLiffAppRequest ? { 'content-type': 'application/x-www-form-urlencoded' } : { 'authorization': authorization },
     };
+    const body = isLiffAppRequest ? encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`) : undefined;
 
-    return request(header).then(response => {
+    return request(header, body).then(response => {
         if (response.statusCode != 200) throw response;
 
         try {
