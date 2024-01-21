@@ -140,7 +140,7 @@ async function increaseByOne(refPath){
     if (!credential) await pushPromiseLock();
     const db = getDatabase(app);
 
-    return (await runTransaction(ref(db, refPath), (value) =>  typeof value === 'number' ? value++ : (value === null || value === undefined ? 0 : value))).committed;
+    return (await runTransaction(ref(db, refPath), (value) =>  typeof value === 'number' ? value + 1 : 1)).committed;
 }
 
 module.exports = { insert, select, update, remove, increaseByOne, Match, };
