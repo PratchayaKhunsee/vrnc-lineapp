@@ -239,8 +239,6 @@ async function getUserProfile(req) {
         }, encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`));
         const body = response.body;
 
-        console.log(typeof body, body);
-
     } catch (error) {
         console.error(`Verifying Error: ${JSON.stringify(error)}`);
         throw error;
@@ -256,8 +254,6 @@ async function getUserProfile(req) {
         port: 443,
         headers: { 'authorization': authorization },
     };
-
-    console.log(header);
 
     return request(header).then(response => {
         if (response.statusCode != 200) throw response;

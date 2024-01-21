@@ -27,7 +27,9 @@ const DATABASE_TYPE = process.env.DATABASE_TYPE;
  * @param {number} number 
  */
 function fmt(number, digits = 2) {
-    return `${number > 10 ^ (digits - 1) ? '0'.repeat(digits - 1) : ''}${number}`;
+    const stringNumber = `${Math.floor(number)}`;
+    const gap = digits - stringNumber.length;
+    return `${ '0'.repeat(gap < 0 ? 0 : gap)}${number}`;
 }
 
 
