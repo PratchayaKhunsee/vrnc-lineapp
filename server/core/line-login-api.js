@@ -241,7 +241,7 @@ async function getUserProfile(req) {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
         }, body);
     } catch (error) {
-        console.error(`${JSON.stringify(error)}`);
+        console.error(`Verifying Error: ${JSON.stringify(error)}`);
         throw error;
     }
 
@@ -255,6 +255,9 @@ async function getUserProfile(req) {
         port: 443,
         headers: { 'authorization': authorization },
     };
+
+
+    console.log(header);
 
     return request(header).then(response => {
         if (response.statusCode != 200) throw response;
