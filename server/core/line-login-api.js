@@ -226,6 +226,7 @@ function authenticate(req, res, success) {
  * @returns {Promise<LineUserProfile>}
  */
 function getUserProfile(req) {
+    console.log(req.headers);
     /**
      * @type {import('https').RequestOptions}
      */

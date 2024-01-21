@@ -114,8 +114,6 @@ async function GET(url) {
         headers['authorization'] = `Bearer ${auth}`;
     }
 
-    alert(JSON.stringify(headers));
-
     let res = await fetch(url, {
         method: 'GET',
         headers,
