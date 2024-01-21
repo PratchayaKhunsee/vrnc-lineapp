@@ -89,14 +89,10 @@ async function select(refPath, ...matches) {
  * @param {*} value 
  * @param {Boolean} useOverwriteMethod
  */
-async function insert(refPath, value, useOverwriteMethod = false) {
+async function insert(refPath, value) {
     if (!credential) await pushPromiseLock();
     const db = getDatabase(app);
 
-    if (useOverwriteMethod) {
-        await set(ref(db, refPath), value);
-        return;
-    }
     return await push(ref(db, refPath), value).then(snapshot => snapshot.key);
 }
 

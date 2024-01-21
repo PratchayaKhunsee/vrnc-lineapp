@@ -69,13 +69,12 @@ async function readUserInfo(uid) {
                 tel: "",
             };
 
-            const id = await firebase.insert(`userinfo/${uid}`, p, true);
-
-            console.log(id, uid);
-            
-            if (typeof id === 'string') {
-                p.uid = id;
+            try {
+                await firebase.insert(`userinfo/${uid}`, p, true);
+                p.uid = uid;
                 increaseUserCounter();
+            } catch (error) {
+                
             }
 
             return p;
