@@ -230,16 +230,17 @@ async function getUserProfile(req) {
     // const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
 
     try {
-        const body = encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`);
-        console.log(body);
-
-        await request({
+        const response = await request({
             method: 'POST',
             hostname: 'api.line.me',
             path: '/oauth2/v2.1/verify',
             port: 443,
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        }, body);
+        }, encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`));
+        const body = response.body;
+
+        console.log(typeof body, body);
+
     } catch (error) {
         console.error(`Verifying Error: ${JSON.stringify(error)}`);
         throw error;
@@ -255,7 +256,6 @@ async function getUserProfile(req) {
         port: 443,
         headers: { 'authorization': authorization },
     };
-
 
     console.log(header);
 
