@@ -35,7 +35,7 @@ function fmt(number, digits = 2) {
 
 async function increaseUserCounter() {
     const date = new Date();
-    return await firebase.increaseByOne(`userinfo/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth())}-${fmt(date.getUTCDate())}`);
+    return await firebase.increaseByOne(`userinfo/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth() + 1)}-${fmt(date.getUTCDate())}`);
 }
 
 /**
@@ -45,7 +45,7 @@ async function increaseUserCounter() {
  */
 async function increaseVaccinationCounter(mode = 'create') {
     const date = new Date();
-    return await firebase.increaseByOne(`vaccination/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth())}-${fmt(date.getUTCDate())}/${mode}`);
+    return await firebase.increaseByOne(`vaccination/counters/${fmt(date.getUTCFullYear(), 4)}-${fmt(date.getUTCMonth() + 1)}-${fmt(date.getUTCDate())}/${mode}`);
 }
 
 
