@@ -224,26 +224,40 @@ function authenticate(req, res, success) {
  * 
  * @returns {Promise<LineUserProfile>}
  */
-function getUserProfile(req) {
+async function getUserProfile(req) {
     const authorization = req.headers.authorization;
     const userAgent = req.headers['user-agent'];
     const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
 
-    console.log(isLiffAppRequest);
+    if (isLiffAppRequest) {
+        const verifyHeader = {
+            method: 'POST',
+            hostname: 'api.line.me',
+            path: '/oauth/v2.1/verify',
+            port: 443,
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        };
+        const verifyBody = isLiffAppRequest ? encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`) : undefined;
+
+        try {
+            console.log(`${await request(verifyHeader, verifyBody)}`);
+        } catch (error) { 
+            console.error(error);
+        }
+    }
 
     /**
      * @type {import('https').RequestOptions}
      */
     const header = {
-        method: isLiffAppRequest ? 'POST' : 'GET',
+        method: 'GET',
         hostname: 'api.line.me',
-        path: isLiffAppRequest ? '/oauth/v2.1/verify' : '/v2/profile',
+        path: '/v2/profile',
         port: 443,
-        headers: isLiffAppRequest ? { 'content-type': 'application/x-www-form-urlencoded' } : { 'authorization': authorization },
+        headers: { 'authorization': authorization },
     };
-    const body = isLiffAppRequest ? encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`) : undefined;
 
-    return request(header, body).then(response => {
+    return request(header).then(response => {
         if (response.statusCode != 200) throw response;
 
         try {
