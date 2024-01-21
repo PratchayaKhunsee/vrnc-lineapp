@@ -226,24 +226,23 @@ function authenticate(req, res, success) {
  */
 async function getUserProfile(req) {
     const authorization = req.headers.authorization;
-    const userAgent = req.headers['user-agent'];
-    const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
+    // const userAgent = req.headers['user-agent'];
+    // const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
 
-    if (isLiffAppRequest) {
-        const verifyHeader = {
+    try {
+        const body = encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`);
+        console.log(body);
+
+        await request({
             method: 'POST',
             hostname: 'api.line.me',
-            path: '/oauth/v2.1/verify',
+            path: '/oauth2/v2.1/verify',
             port: 443,
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        };
-        const verifyBody = isLiffAppRequest ? encodeURIComponent(`id_token=${typeof authorization == 'string' ? authorization.split(/ /)[1] : ''}&client_id=${process.env.LINE_CLIENT_ID || ''}`) : undefined;
-
-        try {
-            console.log(`${await request(verifyHeader, verifyBody)}`);
-        } catch (error) { 
-            console.error(error);
-        }
+        }, body);
+    } catch (error) {
+        console.error(`${JSON.stringify(error)}`);
+        throw error;
     }
 
     /**
