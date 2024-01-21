@@ -226,8 +226,6 @@ function authenticate(req, res, success) {
  */
 async function getUserProfile(req) {
     const authorization = req.headers.authorization;
-    // const userAgent = req.headers['user-agent'];
-    // const isLiffAppRequest = typeof userAgent == 'string' && userAgent.match(/(Liff|Line)/g).length > 0;
 
     try {
         const response = await request({

@@ -292,11 +292,11 @@ async function removeVaccination(uid, vid) {
             const result = await firebase.remove(`vaccination/${vid}`, uid);
 
             if (result) increaseVaccinationCounter('delete');
+
+            return result;
         } catch (error) {
-
+            return false;
         }
-
-        return false;
     }
 
 

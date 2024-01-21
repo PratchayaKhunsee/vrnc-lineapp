@@ -72,10 +72,10 @@ async function createEmptyVaccination(req, res) {
     try {
         let profile = await getUserProfile(req);
 
-        let create = await database.createEmptyVaccination(profile.userId);
+        let created = await database.createEmptyVaccination(profile.userId);
 
         res.write(new URLSearchParams({
-            redirect: `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/vaccination?id=${create.id}`
+            redirect: `${process.env.PROTOCOL || req.protocol}://${req.headers.host}/vaccination/edit?id=${created.id}`
         }).toString());
         res.end();
 
